@@ -1,4 +1,4 @@
-const API_URL = 'https://api.ifuture.sbs/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.ifuture.sbs/api';
 
 export const fetchHomeData = async (lang: string) => {
     const response = await fetch(`${API_URL}/public/home?lang=${lang}`, {
@@ -11,9 +11,17 @@ export const fetchHomeData = async (lang: string) => {
 export const postContactMessage = async (data: any) => {
     const response = await fetch(`${API_URL}/public/contact`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
         body: JSON.stringify(data),
     });
+
+    if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        throw new Error(errorData?.message || 'Failed to send message');
+    }
     return response.json();
 };
 
@@ -36,6 +44,8 @@ export const adminFetch = async (url: string, options: RequestInit = {}) => {
     return fetch(url, {
         ...options,
         headers,
-        credentials: 'include',
+        credentials: 'include', // vital for Sanctum
     });
 };
+
+export const fetchWithAuth = adminFetch;

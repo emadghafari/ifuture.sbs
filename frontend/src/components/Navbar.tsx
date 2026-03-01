@@ -24,7 +24,7 @@ const Navbar = ({ site }: { site?: any }) => {
                 <Link href="/" className="flex items-center gap-3 group">
                     {site?.logo ? (
                         <div className="relative w-9 h-9">
-                            <Image src={`http://localhost:8000${site.logo}`} alt="Logo" fill className="object-contain" />
+                            <Image src={(process.env.NEXT_PUBLIC_API_URL || 'https://api.ifuture.sbs') + site.logo} alt="Logo" fill className="object-contain" />
                         </div>
                     ) : (
                         <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-primary-600 to-gold-400 flex items-center justify-center p-0.5">
@@ -66,9 +66,15 @@ const Navbar = ({ site }: { site?: any }) => {
                         </div>
                     </div>
 
-                    <Link href="#contact" className="px-6 py-2.5 rounded-full bg-primary-600 hover:bg-primary-500 text-white shadow-[0_0_20px_rgba(4,120,87,0.4)] font-semibold text-sm transition-all transform hover:scale-105 border border-primary-400/30">
-                        {language === 'ar' ? 'ابدأ الآن' : language === 'he' ? 'התחל' : 'Get Started'}
-                    </Link>
+                    <div className="flex items-center gap-3">
+                        <Link href="/portal/login" className="px-5 py-2.5 rounded-full bg-white/5 hover:bg-white/10 text-white border border-white/20 font-semibold text-sm transition-all flex items-center gap-2">
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" /></svg>
+                            {t('nav_login')}
+                        </Link>
+                        <Link href="#contact" className="px-6 py-2.5 rounded-full bg-primary-600 hover:bg-primary-500 text-white shadow-[0_0_20px_rgba(4,120,87,0.4)] font-semibold text-sm transition-all transform hover:scale-105 border border-primary-400/30">
+                            {language === 'ar' ? 'ابدأ الآن' : language === 'he' ? 'התחל' : 'Get Started'}
+                        </Link>
+                    </div>
                 </div>
 
                 {/* Mobile Toggle */}
@@ -87,6 +93,7 @@ const Navbar = ({ site }: { site?: any }) => {
                         <Link href="#products" className="text-white font-medium text-lg" onClick={() => setIsOpen(false)}>{t('nav_products')}</Link>
                         <Link href="#about" className="text-white font-medium text-lg" onClick={() => setIsOpen(false)}>{t('nav_about')}</Link>
                         <Link href="#contact" className="text-white font-medium text-lg" onClick={() => setIsOpen(false)}>{t('nav_contact')}</Link>
+                        <Link href="/portal/login" className="text-gold-400 font-medium text-lg" onClick={() => setIsOpen(false)}>{t('nav_login')}</Link>
 
                         <div className="flex gap-2 pt-4 border-t border-white/10">
                             {languages.map((lang) => (

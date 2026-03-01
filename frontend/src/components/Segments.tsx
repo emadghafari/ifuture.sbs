@@ -30,7 +30,7 @@ export const Team = ({ members, teamInfo }: { members: any[]; teamInfo?: any }) 
 
                             <div className="w-32 h-32 rounded-full bg-[#11241d] border-4 border-white/5 flex items-center justify-center font-bold text-3xl relative z-10 overflow-hidden shadow-2xl group-hover:border-primary-500/30 transition-colors">
                                 {member.photo ? (
-                                    <img src={`http://localhost:8000${member.photo}`} alt={member.name} className="w-full h-full object-cover" />
+                                    <img src={(process.env.NEXT_PUBLIC_API_URL || 'https://api.ifuture.sbs') + member.photo} alt={member.name} className="w-full h-full object-cover" />
                                 ) : (
                                     idx === 0 ? '💻' : idx === 1 ? '🎯' : '📈'
                                 )}

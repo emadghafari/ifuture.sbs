@@ -13,7 +13,8 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 
   try {
-    const res = await fetch('http://localhost:8000/api/public/seo?lang=ar', { next: { revalidate: 60 } });
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.ifuture.sbs';
+    const res = await fetch(`${API_URL}/api/public/seo?lang=en`, { next: { revalidate: 60 } });
     if (!res.ok) return defaultMeta;
 
     const data = await res.json();
@@ -24,10 +25,10 @@ export async function generateMetadata(): Promise<Metadata> {
       openGraph: {
         title: data.title || defaultMeta.title,
         description: data.description || defaultMeta.description,
-        images: data.og_image ? ['http://localhost:8000' + data.og_image] : [],
+        images: data.og_image ? [API_URL + data.og_image] : [],
       },
       icons: {
-        icon: data.favicon ? 'http://localhost:8000' + data.favicon : '/favicon.ico',
+        icon: data.favicon ? API_URL + data.favicon : '/favicon.ico',
       }
     };
   } catch (err) {
@@ -41,8 +42,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ar" dir="rtl" suppressHydrationWarning>
-      <body className={`${inter.variable} ${outfit.variable} antialiased font-sans bg-slate-50 text-slate-900`} suppressHydrationWarning>
+    <html lang="en" dir="ltr" suppressHydrationWarning>
+      <body className={`${inter.variable} ${outfit.variable} antialiased font-sans bg-slate-50 text-slate-900 overflow-x-hidden`} suppressHydrationWarning>
         <LanguageProvider>
           {children}
         </LanguageProvider>

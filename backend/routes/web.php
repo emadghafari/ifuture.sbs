@@ -5,9 +5,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::prefix('api')->middleware('api')->group(function () {
-    require __DIR__ . '/api.php';
-});
+
+
 
 // Fallback route for storage files when running via `artisan serve` on Windows
 Route::get('storage/{path}', function ($path) {

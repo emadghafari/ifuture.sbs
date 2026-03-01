@@ -45,7 +45,7 @@ const ProductsGrid = ({ products }: ProductsGridProps) => {
                             {/* Optional Banner Image */}
                             {product.image && (
                                 <div className="w-full h-56 overflow-hidden relative z-10 border-b border-white/5">
-                                    <img src={`http://localhost:8000${product.image}`} alt={product.title} className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 opacity-90 group-hover:opacity-100" />
+                                    <img src={(process.env.NEXT_PUBLIC_API_URL || 'https://api.ifuture.sbs') + product.image} alt={product.title} className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 opacity-90 group-hover:opacity-100" />
                                     <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#06120e] to-transparent"></div>
                                 </div>
                             )}

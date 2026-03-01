@@ -17,18 +17,19 @@ export default function AdminSettings() {
     const faviconInputRef = useRef<HTMLInputElement>(null);
 
     const fetchSettings = async () => {
-        const res = await adminFetch('http://localhost:8000/api/admin/settings');
+        const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.ifuture.sbs';
+        const res = await adminFetch(`${API_URL}/api/admin/settings`);
         const data = await res.json();
         setSettings(data);
 
         const logoSetting = data.find((s: any) => s.key === 'site_logo');
-        if (logoSetting && logoSetting.value) setLogoPreview('http://localhost:8000' + logoSetting.value);
+        if (logoSetting && logoSetting.value) setLogoPreview(API_URL + logoSetting.value);
 
         const ogSetting = data.find((s: any) => s.key === 'seo_og_image');
-        if (ogSetting && ogSetting.value) setOgImagePreview('http://localhost:8000' + ogSetting.value);
+        if (ogSetting && ogSetting.value) setOgImagePreview(API_URL + ogSetting.value);
 
         const favSetting = data.find((s: any) => s.key === 'seo_favicon');
-        if (favSetting && favSetting.value) setFaviconPreview('http://localhost:8000' + favSetting.value);
+        if (favSetting && favSetting.value) setFaviconPreview(API_URL + favSetting.value);
 
         setLoading(false);
     };
@@ -37,7 +38,8 @@ export default function AdminSettings() {
 
     const handleUpdate = async () => {
         setSaving(true);
-        await adminFetch('http://localhost:8000/api/admin/settings', {
+        const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.ifuture.sbs';
+        await adminFetch(`${API_URL}/api/admin/settings`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ settings }),
@@ -52,15 +54,16 @@ export default function AdminSettings() {
 
         const formData = new FormData();
         formData.append('logo', file);
-
-        const res = await adminFetch('http://localhost:8000/api/admin/settings/logo', {
+        const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.ifuture.sbs';
+        const res = await adminFetch(`${API_URL}/api/admin/settings/logo`, {
             method: 'POST',
             body: formData,
         });
 
         if (res.ok) {
             const data = await res.json();
-            setLogoPreview('http://localhost:8000' + data.logo_url);
+            const PROD_API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.ifuture.sbs';
+            setLogoPreview(PROD_API_URL + data.logo_url);
             fetchSettings(); // Refresh settings to get new logo path
         } else {
             alert('Failed to upload logo.');
@@ -71,10 +74,11 @@ export default function AdminSettings() {
         if (!e.target.files || e.target.files.length === 0) return;
         const formData = new FormData();
         formData.append('og_image', e.target.files[0]);
-        const res = await adminFetch('http://localhost:8000/api/admin/settings/og-image', { method: 'POST', body: formData });
+        const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.ifuture.sbs';
+        const res = await adminFetch(`${API_URL}/api/admin/settings/og-image`, { method: 'POST', body: formData });
         if (res.ok) {
             const data = await res.json();
-            setOgImagePreview('http://localhost:8000' + data.og_image_url);
+            setOgImagePreview(API_URL + data.og_image_url);
             fetchSettings();
         } else {
             alert('Failed to upload OG Image.');
@@ -85,10 +89,11 @@ export default function AdminSettings() {
         if (!e.target.files || e.target.files.length === 0) return;
         const formData = new FormData();
         formData.append('favicon', e.target.files[0]);
-        const res = await adminFetch('http://localhost:8000/api/admin/settings/favicon', { method: 'POST', body: formData });
+        const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.ifuture.sbs';
+        const res = await adminFetch(`${API_URL}/api/admin/settings/favicon`, { method: 'POST', body: formData });
         if (res.ok) {
             const data = await res.json();
-            setFaviconPreview('http://localhost:8000' + data.favicon_url);
+            setFaviconPreview(API_URL + data.favicon_url);
             fetchSettings();
         } else {
             alert('Failed to upload Favicon.');
@@ -182,6 +187,52 @@ export default function AdminSettings() {
                         <div>
                             <label className="block text-sm font-semibold text-slate-700 mb-2">Company Global Phone</label>
                             <input type="text" value={getS('company_phone', null)} onChange={(e) => updateValue('company_phone', null, e.target.value)} className="w-full max-w-sm px-5 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:border-blue-500 outline-none transition-all" />
+                        </div>
+                        <div className="pt-4 mt-4 border-t border-slate-100">
+                            <h4 className="text-sm font-bold text-slate-800 mb-3">Social Media URLs (Global)</h4>
+                            <div className="space-y-3">
+                                <input type="text" placeholder="Facebook URL" value={getS('social_facebook', null)} onChange={(e) => updateValue('social_facebook', null, e.target.value)} className="w-full max-w-sm px-4 py-2 rounded-lg bg-slate-50 border border-slate-200 focus:border-blue-500 outline-none text-sm transition-all" />
+                                <input type="text" placeholder="Instagram URL" value={getS('social_instagram', null)} onChange={(e) => updateValue('social_instagram', null, e.target.value)} className="w-full max-w-sm px-4 py-2 rounded-lg bg-slate-50 border border-slate-200 focus:border-blue-500 outline-none text-sm transition-all" />
+                                <input type="text" placeholder="TikTok URL" value={getS('social_tiktok', null)} onChange={(e) => updateValue('social_tiktok', null, e.target.value)} className="w-full max-w-sm px-4 py-2 rounded-lg bg-slate-50 border border-slate-200 focus:border-blue-500 outline-none text-sm transition-all" />
+                                <input type="text" placeholder="X (Twitter) URL" value={getS('social_x', null)} onChange={(e) => updateValue('social_x', null, e.target.value)} className="w-full max-w-sm px-4 py-2 rounded-lg bg-slate-50 border border-slate-200 focus:border-blue-500 outline-none text-sm transition-all" />
+                                <input type="text" placeholder="LinkedIn URL" value={getS('social_linkedin', null)} onChange={(e) => updateValue('social_linkedin', null, e.target.value)} className="w-full max-w-sm px-4 py-2 rounded-lg bg-slate-50 border border-slate-200 focus:border-blue-500 outline-none text-sm transition-all" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Payment Gateways */}
+            <div className="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 p-10 mb-8">
+                <h3 className="text-lg font-bold text-slate-900 mb-2">Crowdfunding Gateways (Global)</h3>
+                <p className="text-sm text-slate-500 mb-6 flex items-center">
+                    <svg className="w-4 h-4 mr-2 text-emerald-500" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd"></path></svg>
+                    These API keys are used across all languages. Keep them secure.
+                </p>
+
+                <div className="grid grid-cols-2 gap-10">
+                    <div className="space-y-4">
+                        <div className="flex items-center gap-2 mb-2">
+                            <span className="bg-indigo-100 text-indigo-700 text-xs font-bold px-2 py-0.5 rounded">STRIPE</span>
+                            <span className="text-sm font-semibold text-slate-700">Visa / Mastercard API</span>
+                        </div>
+                        <div>
+                            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Secret Key (sk_...)</label>
+                            <input type="password" placeholder="sk_live_..." value={getS('payment_stripe_secret', null)} onChange={(e) => updateValue('payment_stripe_secret', null, e.target.value)} className="w-full px-5 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:border-indigo-500 outline-none transition-all font-mono text-sm" />
+                        </div>
+                    </div>
+                    <div className="space-y-4">
+                        <div className="flex items-center gap-2 mb-2">
+                            <span className="bg-blue-100 text-blue-700 text-xs font-bold px-2 py-0.5 rounded">PAYPAL</span>
+                            <span className="text-sm font-semibold text-slate-700">PayPal REST API</span>
+                        </div>
+                        <div>
+                            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Client ID</label>
+                            <input type="password" value={getS('payment_paypal_client_id', null)} onChange={(e) => updateValue('payment_paypal_client_id', null, e.target.value)} className="w-full px-5 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:border-blue-500 outline-none transition-all font-mono text-sm" />
+                        </div>
+                        <div>
+                            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Secret Token</label>
+                            <input type="password" value={getS('payment_paypal_secret', null)} onChange={(e) => updateValue('payment_paypal_secret', null, e.target.value)} className="w-full px-5 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:border-blue-500 outline-none transition-all font-mono text-sm" />
                         </div>
                     </div>
                 </div>
@@ -401,6 +452,38 @@ export default function AdminSettings() {
                                     className="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-200 focus:border-blue-500 outline-none transition-all"
                                 />
                             </div>
+                        </div>
+                    </div>
+
+                    <div className="pt-10 border-t border-slate-100">
+                        <h3 className="text-lg font-bold text-slate-900 mb-6 flex items-center">
+                            <span className="w-8 h-8 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center mr-3 text-sm">05</span>
+                            Footer Configuration
+                        </h3>
+                        <div className="grid grid-cols-2 gap-6 mb-6">
+                            <div>
+                                <label className="block text-sm font-semibold text-slate-700 mb-2">Company Column Title</label>
+                                <input
+                                    type="text" value={getS('footer_company_title', activeTab)} onChange={(e) => updateValue('footer_company_title', activeTab, e.target.value)}
+                                    placeholder="e.g. COMPANY"
+                                    className="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-200 focus:border-blue-500 outline-none transition-all"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-semibold text-slate-700 mb-2">Platforms Column Title</label>
+                                <input
+                                    type="text" value={getS('footer_platforms_title', activeTab)} onChange={(e) => updateValue('footer_platforms_title', activeTab, e.target.value)}
+                                    placeholder="e.g. PLATFORMS"
+                                    className="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-200 focus:border-blue-500 outline-none transition-all"
+                                />
+                            </div>
+                        </div>
+                        <div>
+                            <label className="block text-sm font-semibold text-slate-700 mb-2">Footer Description (Appears above physical address)</label>
+                            <textarea
+                                rows={3} value={getS('footer_description', activeTab)} onChange={(e) => updateValue('footer_description', activeTab, e.target.value)}
+                                className="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-200 focus:border-blue-500 outline-none transition-all resize-none"
+                            ></textarea>
                         </div>
                     </div>
 

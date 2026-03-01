@@ -6,10 +6,16 @@ const ContactForm = ({ site }: { site?: any }) => {
     const { language, t } = useLanguage();
     const [formData, setFormData] = useState({ name: '', email: '', phone: '', company: '', message: '' });
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        alert('Message sent successfully!');
-        setFormData({ name: '', email: '', phone: '', company: '', message: '' });
+        try {
+            await import('@/utils/api').then(m => m.postContactMessage({ ...formData, locale: language || 'en' }));
+            alert('Message sent successfully!');
+            setFormData({ name: '', email: '', phone: '', company: '', message: '' });
+        } catch (err) {
+            console.error(err);
+            alert('Failed to send message. Please try again.');
+        }
     };
 
     const l = language === 'ar' ? {

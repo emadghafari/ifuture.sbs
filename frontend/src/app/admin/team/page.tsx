@@ -12,7 +12,8 @@ export default function AdminTeam() {
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const fetchTeam = async () => {
-        const res = await adminFetch('http://localhost:8000/api/admin/team');
+        const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.ifuture.sbs';
+        const res = await adminFetch(`${API_URL}/api/admin/team`);
         const data = await res.json();
         setTeam(data);
         setLoading(false);
@@ -23,8 +24,9 @@ export default function AdminTeam() {
     const handleSave = async (e: React.FormEvent) => {
         e.preventDefault();
 
+        const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.ifuture.sbs';
         // Ensure we send to the correct URL whether adding or editing
-        let url = editing.id ? `http://localhost:8000/api/admin/team/${editing.id}` : 'http://localhost:8000/api/admin/team';
+        let url = editing.id ? `${API_URL}/api/admin/team/${editing.id}` : `${API_URL}/api/admin/team`;
 
         const formData = new FormData();
         formData.append('type', editing.type);
@@ -75,7 +77,8 @@ export default function AdminTeam() {
 
     const deleteMember = async (id: number) => {
         if (!confirm('Are you sure?')) return;
-        await adminFetch(`http://localhost:8000/api/admin/team/${id}`, { method: 'DELETE' });
+        const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.ifuture.sbs';
+        await adminFetch(`${API_URL}/api/admin/team/${id}`, { method: 'DELETE' });
         fetchTeam();
     };
 
@@ -107,7 +110,10 @@ export default function AdminTeam() {
 
     const getPreviewImage = (m: any) => {
         if (m.preview_url) return m.preview_url;
-        if (m.photo_path) return `http://localhost:8000${m.photo_path}`;
+        if (m.photo_path) {
+            const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.ifuture.sbs';
+            return `${API_URL}${m.photo_path}`;
+        }
         return null;
     };
 

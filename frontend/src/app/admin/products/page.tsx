@@ -11,7 +11,8 @@ export default function AdminProducts() {
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const fetchProducts = async () => {
-        const res = await adminFetch('http://localhost:8000/api/admin/products');
+        const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.ifuture.sbs';
+        const res = await adminFetch(`${API_URL}/api/admin/products`);
         const data = await res.json();
         setProducts(data);
         setLoading(false);
@@ -21,7 +22,8 @@ export default function AdminProducts() {
 
     const handleSave = async (e: React.FormEvent) => {
         e.preventDefault();
-        const url = editing.id ? `http://localhost:8000/api/admin/products/${editing.id}` : 'http://localhost:8000/api/admin/products';
+        const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.ifuture.sbs';
+        const url = editing.id ? `${API_URL}/api/admin/products/${editing.id}` : `${API_URL}/api/admin/products`;
 
         const formData = new FormData();
         formData.append('slug', editing.slug);
@@ -56,7 +58,8 @@ export default function AdminProducts() {
 
     const deleteProduct = async (id: number) => {
         if (!confirm('Are you sure?')) return;
-        await adminFetch(`http://localhost:8000/api/admin/products/${id}`, { method: 'DELETE' });
+        const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.ifuture.sbs';
+        await adminFetch(`${API_URL}/api/admin/products/${id}`, { method: 'DELETE' });
         fetchProducts();
     };
 
@@ -90,7 +93,10 @@ export default function AdminProducts() {
 
     const getPreviewImage = (p: any) => {
         if (p.preview_url) return p.preview_url;
-        if (p.image_path) return `http://localhost:8000${p.image_path}`;
+        if (p.image_path) {
+            const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.ifuture.sbs';
+            return `${API_URL}${p.image_path}`;
+        }
         return null;
     };
 

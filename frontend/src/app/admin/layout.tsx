@@ -8,13 +8,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     const [user, setUser] = useState<any>(null);
     const [isBellOpen, setIsBellOpen] = useState(false);
     const [isProfileOpen, setIsProfileOpen] = useState(false);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const router = useRouter();
     const pathname = usePathname();
 
     useEffect(() => {
         if (pathname === '/admin/login') return;
 
-        adminFetch('http://localhost:8000/api/auth/user')
+        const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.ifuture.sbs';
+        adminFetch(`${API_URL}/api/auth/user`)
             .then(res => {
                 if (!res.ok) throw new Error();
                 return res.json();
@@ -27,9 +29,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     if (!user && pathname !== '/admin/login') return <div className="min-h-screen bg-[#0b1120]"></div>;
 
     return (
-        <div dir="ltr" className="min-h-screen bg-slate-50 flex font-sans text-slate-900">
+        <div dir="ltr" className="min-h-screen bg-slate-50 flex font-sans text-slate-900 overflow-x-hidden">
+            {/* Mobile Sidebar Overlay */}
+            {isSidebarOpen && (
+                <div className="fixed inset-0 bg-slate-900/50 z-40 md:hidden backdrop-blur-sm" onClick={() => setIsSidebarOpen(false)}></div>
+            )}
+
             {/* Dark Premium Sidebar */}
-            <aside className="w-64 bg-[#0B1120] text-slate-300 flex flex-col fixed inset-y-0 z-50">
+            <aside className={`w-64 bg-[#0B1120] text-slate-300 flex flex-col fixed inset-y-0 z-50 transform md:translate-x-0 transition-transform duration-300 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
                 {/* Header Profile / Switcher area */}
                 <div className="flex items-center justify-between px-6 py-5 border-b border-slate-800/50">
                     <div className="flex items-center gap-3 cursor-pointer hover:text-white hover:scale-105 transition-all duration-300">
@@ -63,6 +70,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                                 <svg className="w-4 h-4 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
                                 <span>Team Members</span>
                             </Link>
+                            <Link href="/admin/projects" className={`flex items-center space-x-3 px-3 py-2 rounded-lg text-sm transition-all duration-300 hover:scale-[1.02] active:scale-95 ${pathname === '/admin/projects' ? 'bg-[#1E293B] text-white font-medium shadow-md' : 'text-slate-400 hover:text-white hover:bg-slate-800/50 hover:translate-x-1'}`}>
+                                <svg className="w-4 h-4 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
+                                <span>Projects</span>
+                            </Link>
+                            <Link href="/admin/investments" className={`flex items-center space-x-3 px-3 py-2 rounded-lg text-sm transition-all duration-300 hover:scale-[1.02] active:scale-95 ${pathname === '/admin/investments' ? 'bg-[#1E293B] text-white font-medium shadow-md' : 'text-slate-400 hover:text-white hover:bg-slate-800/50 hover:translate-x-1'}`}>
+                                <svg className="w-4 h-4 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                <span>Investments</span>
+                            </Link>
                             <Link href="/admin/messages" className={`flex items-center space-x-3 px-3 py-2 rounded-lg text-sm transition-all duration-300 hover:scale-[1.02] active:scale-95 ${pathname === '/admin/messages' ? 'bg-[#1E293B] text-white font-medium shadow-md' : 'text-slate-400 hover:text-white hover:bg-slate-800/50 hover:translate-x-1'}`}>
                                 <svg className="w-4 h-4 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
                                 <span>Messages</span>
@@ -80,7 +95,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                                 <svg className="w-4 h-4 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                                 <span>Settings</span>
                             </Link>
-                            <button onClick={() => { adminFetch('http://localhost:8000/api/auth/logout', { method: 'POST' }).then(() => router.push('/admin/login')); }} className="w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-sm text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-all duration-300 hover:scale-[1.02] active:scale-95">
+                            <button onClick={() => { const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.ifuture.sbs'; adminFetch(`${API_URL}/api/auth/logout`, { method: 'POST' }).then(() => router.push('/admin/login')); }} className="w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-sm text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-all duration-300 hover:scale-[1.02] active:scale-95">
                                 <svg className="w-4 h-4 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
                                 <span>Sign Out</span>
                             </button>
@@ -103,10 +118,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </aside>
 
             {/* Main Content Area */}
-            <main className="flex-1 ml-64 min-h-screen bg-white shadow-[-10px_0_15px_-3px_rgba(0,0,0,0.1)] z-10 relative">
+            <main className="flex-1 md:ml-64 min-h-screen w-full md:w-auto bg-white shadow-[-10px_0_15px_-3px_rgba(0,0,0,0.1)] z-10 relative">
+
+                {/* Mobile Sidebar Toggle */}
+                <div className="absolute top-6 left-6 md:hidden z-[100]">
+                    <button onClick={() => setIsSidebarOpen(true)} className="p-2 bg-slate-100 rounded-lg text-slate-600 hover:bg-slate-200 transition-colors shadow-sm focus:outline-none">
+                        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg>
+                    </button>
+                </div>
 
                 {/* Top Right Floating Navigation */}
-                <div className="absolute top-6 right-10 flex items-center gap-6 z-[100]">
+                <div className="absolute top-6 right-6 md:right-10 flex items-center gap-4 md:gap-6 z-[100]">
 
                     {/* Notification Bell */}
                     <div className="relative">
@@ -165,7 +187,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                                         <svg className="w-4 h-4 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                                         Account Settings
                                     </Link>
-                                    <button onClick={() => { adminFetch('http://localhost:8000/api/auth/logout', { method: 'POST' }).then(() => router.push('/admin/login')); }} className="w-full flex items-center px-4 py-2 text-red-600 hover:bg-red-50 text-left transition-colors cursor-pointer font-medium">
+                                    <button onClick={() => { const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.ifuture.sbs'; adminFetch(`${API_URL}/api/auth/logout`, { method: 'POST' }).then(() => router.push('/admin/login')); }} className="w-full flex items-center px-4 py-2 text-red-600 hover:bg-red-50 text-left transition-colors cursor-pointer font-medium">
                                         <svg className="w-4 h-4 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
                                         Sign Out
                                     </button>

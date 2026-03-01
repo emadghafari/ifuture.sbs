@@ -8,7 +8,8 @@ export default function AdminMessages() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        adminFetch('http://localhost:8000/api/admin/messages')
+        const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.ifuture.sbs';
+        adminFetch(`${API_URL}/api/admin/messages`)
             .then(res => res.json())
             .then(data => {
                 setMessages(data);

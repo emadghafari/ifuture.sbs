@@ -7,8 +7,9 @@ export default function Dashboard() {
     const [user, setUser] = useState<any>(null);
 
     useEffect(() => {
-        adminFetch('http://localhost:8000/api/auth/user').then(r => r.json()).then(setUser);
-        adminFetch('http://localhost:8000/api/admin/dashboard/stats').then(r => r.json()).then(setApiStats);
+        const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.ifuture.sbs';
+        adminFetch(`${API_URL}/api/auth/user`).then(r => r.json()).then(setUser);
+        adminFetch(`${API_URL}/api/admin/dashboard/stats`).then(r => r.json()).then(setApiStats);
     }, []);
 
     return (

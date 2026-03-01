@@ -68,6 +68,16 @@ class PublicController extends Controller
             'phone' => $getSetting('company_phone', null),
             'address' => $getSetting('company_address', $lang),
             'copyright' => $getSetting('site_copyright', $lang),
+            // New Footer Fields
+            'footer_description' => $getSetting('footer_description', $lang),
+            'footer_platforms_title' => $getSetting('footer_platforms_title', $lang),
+            'footer_company_title' => $getSetting('footer_company_title', $lang),
+            // Social Media
+            'social_facebook' => $getSetting('social_facebook', null),
+            'social_instagram' => $getSetting('social_instagram', null),
+            'social_tiktok' => $getSetting('social_tiktok', null),
+            'social_x' => $getSetting('social_x', null),
+            'social_linkedin' => $getSetting('social_linkedin', null),
         ];
 
         $hero = [
@@ -151,6 +161,7 @@ class PublicController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'phone' => 'nullable|string|max:20',
+            'company' => 'nullable|string|max:255',
             'message' => 'required|string',
             'locale' => 'required|string|in:ar,he,en',
         ]);

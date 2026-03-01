@@ -90,8 +90,8 @@ const Hero = ({ hero }: { hero?: any }) => {
             <div className="absolute top-[18%] left-1/2 -translate-x-1/2 w-[200vw] sm:w-[150vw] md:w-[130vw] lg:w-[110vw] max-w-[1400px] h-40 bg-primary-500/30 blur-[60px] rounded-[100%] pointer-events-none transition-transform duration-700" style={{ transform: `translate(calc(-50% + ${mousePos.x * 25}px), ${mousePos.y * 25}px)` }}></div>
 
             {/* Content Container - Positioned over the globe */}
-            <div className="relative z-10 max-w-4xl mx-auto px-4 text-center mt-8">
-                <h1 className="text-[3.5rem] sm:text-[5rem] md:text-[6rem] font-bold text-white tracking-tight leading-[1.1] mb-6">
+            <div className="relative z-10 w-full max-w-[90vw] md:max-w-3xl lg:max-w-4xl mx-auto px-4 text-center mt-8 md:mt-12">
+                <h1 className="text-[clamp(2.5rem,6.5vw,5.5rem)] font-bold text-white tracking-tight leading-[1.1] sm:leading-[1.05] mb-6 px-2 sm:px-8">
                     {d.title_1}
                     <br />
                     {d.title_2}{" "}
@@ -100,7 +100,7 @@ const Hero = ({ hero }: { hero?: any }) => {
                     </span>
                 </h1>
 
-                <p className="text-lg sm:text-xl text-slate-400 max-w-2xl mx-auto font-medium mb-12">
+                <p className="text-[clamp(1rem,1.8vw,1.25rem)] text-slate-400 max-w-[85vw] md:max-w-[70vw] lg:max-w-2xl mx-auto font-medium mb-12 px-4">
                     {d.subtitle}
                 </p>
 

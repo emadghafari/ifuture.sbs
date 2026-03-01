@@ -23,12 +23,13 @@ export default function AdminLogin() {
         setError('');
 
         try {
+            const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.ifuture.sbs';
             // Laravel Sanctum CSRF cookie
-            await fetch('http://localhost:8000/sanctum/csrf-cookie', {
+            await fetch(`${API_URL}/sanctum/csrf-cookie`, {
                 credentials: 'include',
             });
 
-            const response = await fetch('http://localhost:8000/api/auth/login', {
+            const response = await fetch(`${API_URL}/api/auth/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
