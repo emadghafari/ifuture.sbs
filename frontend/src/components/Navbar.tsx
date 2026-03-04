@@ -40,10 +40,11 @@ const Navbar = ({ site }: { site?: any }) => {
 
                 {/* Centered Links */}
                 <div className="hidden md:flex items-center gap-8 md:gap-10">
-                    <Link href="#home" className="text-sm font-medium text-slate-300 hover:text-white transition-colors">{t('nav_home')}</Link>
-                    <Link href="#products" className="text-sm font-medium text-slate-300 hover:text-white transition-colors">{t('nav_products')}</Link>
-                    <Link href="#about" className="text-sm font-medium text-slate-300 hover:text-white transition-colors">{t('nav_about')}</Link>
-                    <Link href="#contact" className="text-sm font-medium text-slate-300 hover:text-white transition-colors">{t('nav_contact')}</Link>
+                    <Link href="/#home" className="text-sm font-medium text-slate-300 hover:text-white transition-colors">{t('nav.home')}</Link>
+                    <Link href="/#products" className="text-sm font-medium text-slate-300 hover:text-white transition-colors">{t('nav.products')}</Link>
+                    <Link href="/projects" className="text-sm font-medium text-gold-400 hover:text-white transition-colors">Campaigns</Link>
+                    <Link href="/#about" className="text-sm font-medium text-slate-300 hover:text-white transition-colors">{t('nav.about')}</Link>
+                    <Link href="/#contact" className="text-sm font-medium text-slate-300 hover:text-white transition-colors">{t('nav.contact')}</Link>
                 </div>
 
                 {/* Right Actions */}
@@ -69,10 +70,10 @@ const Navbar = ({ site }: { site?: any }) => {
                     <div className="flex items-center gap-3">
                         <Link href="/portal/login" className="px-5 py-2.5 rounded-full bg-white/5 hover:bg-white/10 text-white border border-white/20 font-semibold text-sm transition-all flex items-center gap-2">
                             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" /></svg>
-                            {t('nav_login')}
+                            {t('nav.login')}
                         </Link>
                         <Link href="#contact" className="px-6 py-2.5 rounded-full bg-primary-600 hover:bg-primary-500 text-white shadow-[0_0_20px_rgba(4,120,87,0.4)] font-semibold text-sm transition-all transform hover:scale-105 border border-primary-400/30">
-                            {language === 'ar' ? 'ابدأ الآن' : language === 'he' ? 'התחל' : 'Get Started'}
+                            {t('nav.contact')}
                         </Link>
                     </div>
                 </div>
@@ -89,11 +90,11 @@ const Navbar = ({ site }: { site?: any }) => {
             {isOpen && (
                 <div className="absolute top-20 left-4 right-4 bg-[#091512]/95 backdrop-blur-3xl border border-white/10 rounded-3xl p-6 shadow-2xl pointer-events-auto md:hidden">
                     <div className="flex flex-col space-y-4">
-                        <Link href="#home" className="text-white font-medium text-lg" onClick={() => setIsOpen(false)}>{t('nav_home')}</Link>
-                        <Link href="#products" className="text-white font-medium text-lg" onClick={() => setIsOpen(false)}>{t('nav_products')}</Link>
-                        <Link href="#about" className="text-white font-medium text-lg" onClick={() => setIsOpen(false)}>{t('nav_about')}</Link>
-                        <Link href="#contact" className="text-white font-medium text-lg" onClick={() => setIsOpen(false)}>{t('nav_contact')}</Link>
-                        <Link href="/portal/login" className="text-gold-400 font-medium text-lg" onClick={() => setIsOpen(false)}>{t('nav_login')}</Link>
+                        <Link href="#home" className="text-white font-medium text-lg" onClick={() => setIsOpen(false)}>{t('nav.home')}</Link>
+                        <Link href="#products" className="text-white font-medium text-lg" onClick={() => setIsOpen(false)}>{t('nav.products')}</Link>
+                        <Link href="#about" className="text-white font-medium text-lg" onClick={() => setIsOpen(false)}>{t('nav.about')}</Link>
+                        <Link href="#contact" className="text-white font-medium text-lg" onClick={() => setIsOpen(false)}>{t('nav.contact')}</Link>
+                        <Link href="/portal/login" className="text-gold-400 font-medium text-lg" onClick={() => setIsOpen(false)}>{t('nav.login')}</Link>
 
                         <div className="flex gap-2 pt-4 border-t border-white/10">
                             {languages.map((lang) => (

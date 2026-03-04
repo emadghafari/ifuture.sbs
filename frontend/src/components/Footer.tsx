@@ -68,23 +68,23 @@ const Footer = ({ site }: { site?: any }) => {
                     </div>
 
                     <div>
-                        <h4 className="text-white font-bold text-sm tracking-widest uppercase mb-6">{site?.footer_platforms_title?.trim() || t('footer_platforms_title_fallback')}</h4>
+                        <h4 className="text-white font-bold text-sm tracking-widest uppercase mb-6">{t('footer.platforms_title')}</h4>
                         <ul className="space-y-4 text-sm font-medium">
-                            <li><a href="#" className="hover:text-primary-400 transition-colors">Card iFuture</a></li>
-                            <li><a href="#" className="hover:text-primary-400 transition-colors">Kashier System</a></li>
-                            <li><a href="#" className="hover:text-primary-400 transition-colors">Events Hub</a></li>
-                            <li><a href="#" className="hover:text-primary-400 transition-colors">CRM Core</a></li>
+                            <li><a href="#products" className="hover:text-primary-400 transition-colors">{t('products.card_title')}</a></li>
+                            <li><a href="#products" className="hover:text-primary-400 transition-colors">{t('products.crm_title')}</a></li>
+                            <li><a href="#products" className="hover:text-primary-400 transition-colors">{t('products.school_title')}</a></li>
+                            <li><a href="#products" className="hover:text-primary-400 transition-colors">{t('products.gym_title')}</a></li>
                         </ul>
                     </div>
 
                     <div>
-                        <h4 className="text-white font-bold text-sm tracking-widest uppercase mb-6">{site?.footer_company_title?.trim() || t('footer_company_title_fallback')}</h4>
+                        <h4 className="text-white font-bold text-sm tracking-widest uppercase mb-6">{t('footer.company_title')}</h4>
                         <ul className="space-y-4 text-sm font-medium">
-                            <li><a href="#" className="hover:text-primary-400 transition-colors">{t('footer_about')}</a></li>
-                            <li><a href="#" className="hover:text-primary-400 transition-colors">{t('footer_partners')}</a></li>
-                            <li><a href="#" className="hover:text-primary-400 transition-colors">{t('footer_sales')}</a></li>
-                            <li><Link href="/admin/login" className="hover:text-primary-400 transition-colors">{t('footer_portal')}</Link></li>
-                            <li><Link href="/portal/login" className="hover:text-primary-400 transition-colors">{t('nav_login')}</Link></li>
+                            <li><a href="#about" className="hover:text-primary-400 transition-colors">{t('footer.about')}</a></li>
+                            <li><a href="#contact" className="hover:text-primary-400 transition-colors">{t('footer.partners')}</a></li>
+                            <li><a href="#contact" className="hover:text-primary-400 transition-colors">{t('footer.sales')}</a></li>
+                            <li><Link href="/admin/login" className="hover:text-primary-400 transition-colors">{t('footer.portal')}</Link></li>
+                            <li><Link href="/portal/login" className="hover:text-primary-400 transition-colors">{t('nav.login')}</Link></li>
                         </ul>
                     </div>
                 </div>
@@ -92,9 +92,9 @@ const Footer = ({ site }: { site?: any }) => {
                 <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-xs font-bold text-slate-500">
                     <p dir="ltr" className="text-left md:text-right">{site?.copyright || `© ${new Date().getFullYear()} iFuture Hub. All rights reserved.`}</p>
                     <div className="flex space-x-6 rtl:space-x-reverse mt-6 md:mt-0">
-                        <a href="#" className="hover:text-slate-300 transition-colors">{t('footer_privacy')}</a>
-                        <a href="#" className="hover:text-slate-300 transition-colors">{t('footer_terms')}</a>
-                        <a href="#" className="hover:text-slate-300 transition-colors">{t('footer_cookies')}</a>
+                        <a href="#" className="hover:text-slate-300 transition-colors">{t('footer.privacy')}</a>
+                        <a href="#" className="hover:text-slate-300 transition-colors">{t('footer.terms')}</a>
+                        <a href="#" className="hover:text-slate-300 transition-colors">{t('footer.cookies')}</a>
                     </div>
                 </div>
             </div>

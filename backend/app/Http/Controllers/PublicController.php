@@ -145,6 +145,13 @@ class PublicController extends Controller
             ];
         });
 
+        // Fetch top 3 active projects for the homepage
+        $featured_projects = \App\Models\Project::where('status', '!=', 'draft')
+            ->withCount('investments')
+            ->orderBy('created_at', 'desc')
+            ->take(3)
+            ->get();
+
         return response()->json([
             'site' => $site,
             'hero' => $hero,
@@ -152,7 +159,30 @@ class PublicController extends Controller
             'team_info' => $team_info,
             'products' => $products,
             'team' => $team,
+            'featured_projects' => $featured_projects,
         ]);
+    }
+
+    public function getProjects(Request $request)
+    {
+        // Public endpoint to see all active/funding/completed projects
+        $projects = \App\Models\Project::where('status', '!=', 'draft')
+            ->withCount('investments')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return response()->json($projects);
+    }
+
+    public function getProject($slug)
+    {
+        $project = \App\Models\Project::where('slug', $slug)
+            ->where('status', '!=', 'draft')
+            ->withCount('investments')
+            ->with('stages')
+            ->firstOrFail();
+
+        return response()->json($project);
     }
 
     public function postContact(Request $request)

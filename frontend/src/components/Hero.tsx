@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
 
 const Hero = ({ hero }: { hero?: any }) => {
-    const { language } = useLanguage();
+    const { t } = useLanguage();
     const sectionRef = useRef<HTMLElement>(null);
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
@@ -29,20 +29,6 @@ const Hero = ({ hero }: { hero?: any }) => {
         transform: `translate(calc(-50% + ${mousePos.x * 30}px), ${mousePos.y * 30}px)`,
         transition: 'transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1)'
     };
-
-    // Fallback texts if API is loading
-    const defaultData = {
-        title_1: language === 'ar' ? 'نحرك عوالمك.' : 'Moving Your World.',
-        title_2: language === 'ar' ? 'بسلاسة تامة.' : 'Seamlessly.',
-        hero_company_name: language === 'ar' ? 'آي فيوتشر هب' : 'iFuture',
-        subtitle: language === 'ar' ? 'حلول رقمية ذكية وموثوقة لأنظمة الإدارة والأعمال — أينما تحتاج أن تصل أعمالك.' : 'Smart, reliable digital solutions across management and business platforms.',
-        button: language === 'ar' ? 'احصل على أنظمتنا' : 'Start Your Project',
-        stats: [
-            { val: '150', lbl: 'Countries' }, { val: '24/7', lbl: 'Support' }, { val: '10,000+', lbl: 'Users' }
-        ]
-    };
-
-    const d = hero || defaultData;
 
     return (
         <section ref={sectionRef} id="home" className="relative min-h-[105vh] bg-[#030a08] overflow-hidden flex flex-col items-center justify-center pt-32 pb-24 text-white">
@@ -92,26 +78,24 @@ const Hero = ({ hero }: { hero?: any }) => {
             {/* Content Container - Positioned over the globe */}
             <div className="relative z-10 w-full max-w-[90vw] md:max-w-3xl lg:max-w-4xl mx-auto px-4 text-center mt-8 md:mt-12">
                 <h1 className="text-[clamp(2.5rem,6.5vw,5.5rem)] font-bold text-white tracking-tight leading-[1.1] sm:leading-[1.05] mb-6 px-2 sm:px-8">
-                    {d.title_1}
-                    <br />
-                    {d.title_2}{" "}
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-slate-200 via-slate-400 to-slate-200">
-                        {d.hero_company_name}
-                    </span>
+                    {t('hero.h1')}
                 </h1>
 
-                <p className="text-[clamp(1rem,1.8vw,1.25rem)] text-slate-400 max-w-[85vw] md:max-w-[70vw] lg:max-w-2xl mx-auto font-medium mb-12 px-4">
-                    {d.subtitle}
+                <p className="text-[clamp(1rem,1.8vw,1.25rem)] text-slate-400 max-w-[85vw] md:max-w-[70vw] lg:max-w-2xl mx-auto font-medium mb-12 px-4 leading-relaxed">
+                    {t('hero.subtitle')}
                 </p>
 
-                <div className="flex justify-center">
-                    <a href="#contact" className="group flex items-center bg-white text-black rounded-full p-1.5 pr-6 pl-2 shadow-[0_0_30px_rgba(255,255,255,0.2)] hover:shadow-[0_0_40px_rgba(255,255,255,0.4)] transition-all">
+                <div className="flex justify-center flex-wrap gap-4">
+                    <a href="#products" className="group flex items-center bg-white text-black rounded-full p-1.5 pr-6 pl-2 shadow-[0_0_30px_rgba(255,255,255,0.2)] hover:shadow-[0_0_40px_rgba(255,255,255,0.4)] transition-all">
                         <span className="bg-black text-white px-5 py-3 rounded-full font-bold text-sm tracking-wide mr-4 rtl:ml-4 rtl:mr-0 group-hover:bg-[#111] transition-colors">
-                            {d.button}
+                            {t('hero.cta_explore')}
                         </span>
                         <svg className="w-5 h-5 group-hover:translate-x-1 rtl:group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                         </svg>
+                    </a>
+                    <a href="/portal/login" className="group flex items-center bg-transparent border border-white/20 text-white rounded-full px-8 py-4 hover:bg-white/10 transition-all font-bold text-sm tracking-wide">
+                        {t('hero.cta_investor')}
                     </a>
                 </div>
             </div>
@@ -119,7 +103,11 @@ const Hero = ({ hero }: { hero?: any }) => {
             {/* Bottom Stats Row matching reference */}
             <div className="absolute bottom-10 left-0 right-0 w-full max-w-5xl mx-auto px-6 z-20">
                 <div className="grid grid-cols-3 gap-4 border-t border-white/10 pt-8 mt-12 text-center divide-x divide-white/10 rtl:divide-x-reverse">
-                    {d.stats?.map((stat: any, idx: number) => (
+                    {[
+                        { val: t('stats.val1'), lbl: t('stats.lbl1') },
+                        { val: t('stats.val2'), lbl: t('stats.lbl2') },
+                        { val: t('stats.val3'), lbl: t('stats.lbl3') }
+                    ].map((stat, idx) => (
                         <div key={idx}>
                             <p className="text-xl sm:text-2xl font-bold text-white mb-1">{stat.val}</p>
                             <p className="text-sm text-slate-500 font-medium">{stat.lbl}</p>

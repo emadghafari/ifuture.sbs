@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import ProductsGrid from '@/components/ProductsGrid';
+import FeaturedProjects from '@/components/FeaturedProjects';
 import { About, Team } from '@/components/Segments';
 import ContactForm from '@/components/ContactForm';
 import Footer from '@/components/Footer';
@@ -42,6 +43,7 @@ export default function Home() {
       <Navbar site={data.site} />
       <Hero hero={data.hero} />
       <ProductsGrid products={data.products} />
+      <FeaturedProjects projects={data.featured_projects} />
       <About about={data.about} />
       <Team members={data.team} teamInfo={data.team_info} />
       <ContactForm site={data.site} />
