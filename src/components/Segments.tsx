@@ -6,6 +6,8 @@ import { useLanguage } from '@/context/LanguageContext';
 export const Team = ({ members, teamInfo }: { members: any[]; teamInfo?: any }) => {
     const { language } = useLanguage();
 
+    if (!members || !Array.isArray(members) || members.length === 0) return null;
+
     // Fallback if API hasn't loaded
     const defaultInfo = {
         title: language === 'ar' ? 'فريق العمل' : 'The Team',

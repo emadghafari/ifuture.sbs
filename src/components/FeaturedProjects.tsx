@@ -60,9 +60,9 @@ export default function FeaturedProjects({ projects }: { projects: any[] }) {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                     {projects.map((project: any) => {
-                        const percentFunded = Math.min((project.current_amount / project.target_amount) * 100, 100);
-                        const remaining = Math.max(project.target_amount - project.current_amount, 0);
-                        const statusLabel = t[project.status] || project.status.replace('_', ' ').toUpperCase();
+                        const percentFunded = project.target_amount ? Math.min((project.current_amount / project.target_amount) * 100, 100) : 0;
+                        const remaining = project.target_amount ? Math.max(project.target_amount - (project.current_amount || 0), 0) : 0;
+                        const statusLabel = project.status ? (t[project.status] || project.status.replace('_', ' ').toUpperCase()) : 'UNKNOWN';
 
                         return (
                             <Link href={`/projects/${project.slug}`} key={project.id} className="group relative bg-[#06120e] rounded-[2.5rem] border border-white/5 overflow-hidden hover:border-primary-500/30 transition-all duration-500 flex flex-col hover:-translate-y-2 pb-6">

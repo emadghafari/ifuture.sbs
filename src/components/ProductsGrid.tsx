@@ -18,6 +18,8 @@ interface ProductsGridProps {
 const ProductsGrid = ({ products }: ProductsGridProps) => {
     const { language } = useLanguage();
 
+    if (!products || !Array.isArray(products) || products.length === 0) return null;
+
     return (
         <section id="products" className="py-32 bg-[#030a08] relative">
             {/* Subtle background glow */}
