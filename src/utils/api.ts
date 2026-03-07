@@ -1,4 +1,5 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.ifuture.sbs/api';
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.ifuture.sbs';
+const API_URL = `${BASE_URL}/api`;
 
 export const fetchHomeData = async (lang: string) => {
     const response = await fetch(`${API_URL}/public/home?lang=${lang}`, {
