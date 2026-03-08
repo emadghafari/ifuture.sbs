@@ -127,39 +127,70 @@ export default function SignContract(props: { params: Promise<{ slug: string }> 
                 <h1 className="text-3xl md:text-4xl font-black text-white text-center mb-10">Electronic Investment Agreement</h1>
 
                 {/* Contract Text Sandbox */}
-                <div className="bg-white text-black p-8 md:p-12 rounded-t-3xl shadow-xl prose max-w-none text-right" dir="rtl" style={{ fontFamily: 'Tahoma, Arial, sans-serif' }}>
-                    <div className="text-center border-b-2 border-black pb-4 mb-8">
-                        <h2 className="text-2xl font-bold mb-2 m-0">نموذج اتفاقية استثمار ومشاركة</h2>
-                        <p className="text-gray-600 m-0">تاريخ الإبرام: {new Date().toLocaleDateString('ar-EG')}</p>
+                <div className="bg-white text-[#1E1E1E] p-8 md:p-12 rounded-t-3xl shadow-xl max-w-none text-left" dir="ltr" style={{ fontFamily: 'Arial, Helvetica, sans-serif', lineHeight: '1.6' }}>
+
+                    <div className="text-center border-b-2 border-[#C8A951] pb-6 mb-8">
+                        <h1 className="text-3xl md:text-4xl font-bold text-[#0B0B0B] mb-2" style={{ fontFamily: '"Times New Roman", Times, serif' }}>iFuture Hub</h1>
+                        <p className="text-[#C8A951] uppercase tracking-widest text-sm font-bold mb-6">Premium Digital Investment Platform</p>
+                        <h2 className="text-2xl font-normal text-[#0B0B0B] m-0 uppercase tracking-wide" style={{ fontFamily: '"Times New Roman", Times, serif' }}>Equity Investment Agreement</h2>
                     </div>
 
-                    <p>تم إبرام هذه الاتفاقية بين كل من:</p>
+                    <div className="mb-8 text-[15px] text-[#1E1E1E]">
+                        This Investment Agreement ("Agreement") is made on <strong>{new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</strong>, by and between:
+                    </div>
 
-                    <h3 className="text-lg font-bold border-b border-gray-300 pb-2 mt-6">الطرف الأول (مدير المشروع)</h3>
-                    <p className="font-bold mb-0">الشركة / المشروع: iFuture Hub</p>
-                    <p className="font-bold">الممثل القانوني: Emad Ghafari</p>
+                    <div className="bg-[#FAFAFA] border border-[#EAEAEA] border-l-4 border-l-[#C8A951] p-5 rounded-md mb-6">
+                        <h3 className="text-xl text-[#0B0B0B] font-bold border-b border-[#EAEAEA] pb-2 mb-3" style={{ fontFamily: '"Times New Roman", Times, serif' }}>Company:</h3>
+                        <div className="text-[15px]">
+                            <strong>iFuture Hub (iFuture LLC)</strong><br />
+                            A technology company specializing in digital platforms, software solutions, and SaaS systems.<br />
+                            Represented by: <strong>Emad Ghafari</strong><br />
+                            <em className="text-gray-500 block mt-2">Hereinafter referred to as "the Company"</em>
+                        </div>
+                    </div>
 
-                    <h3 className="text-lg font-bold border-b border-gray-300 pb-2 mt-6">الطرف الثاني (المستثمر)</h3>
-                    <p className="mb-0"><strong>اسم المستثمر:</strong> {investment?.user?.name || 'N/A'}</p>
-                    <p><strong>رقم المستثمر:</strong> #{investment?.user?.id || 'N/A'}</p>
+                    <div className="bg-[#FAFAFA] border border-[#EAEAEA] border-l-4 border-l-[#C8A951] p-5 rounded-md mb-8">
+                        <h3 className="text-xl text-[#0B0B0B] font-bold border-b border-[#EAEAEA] pb-2 mb-3" style={{ fontFamily: '"Times New Roman", Times, serif' }}>Investor:</h3>
+                        <div className="text-[15px]">
+                            Name: <strong>{investment?.user?.name || 'N/A'}</strong><br />
+                            ID / Reference: <strong>#{investment?.user?.id || 'N/A'}</strong><br />
+                            <em className="text-gray-500 block mt-2">Hereinafter referred to as "the Investor"</em>
+                        </div>
+                    </div>
 
-                    <h3 className="text-lg font-bold border-b border-gray-300 pb-2 mt-6">1. موضوع الاتفاقية</h3>
-                    <p>
-                        يوافق المستثمر على الاستثمار في مشروع <strong>{investment?.project?.title || 'N/A'}</strong>،
-                        وهو نظام / منصة رقمية. ويتم تطويره وإدارته من قبل الطرف الأول (iFuture Hub).
+                    <div className="text-center italic text-[#1E1E1E] mb-10">
+                        The Company and the Investor shall collectively be referred to as "the Parties".
+                    </div>
+
+                    <h3 className="text-xl font-bold text-[#0B0B0B] border-b border-[#EAEAEA] pb-2 mt-8 mb-4 w-fit pr-8" style={{ fontFamily: '"Times New Roman", Times, serif' }}>1. Purpose of the Agreement</h3>
+                    <p className="text-[15px] mb-6">
+                        The Investor agrees to invest in the following project developed and operated by the Company:<br /><br />
+                        <strong>{investment?.project?.title || 'N/A'}</strong><br /><br />
+                        The project is a digital system / platform, and is fully owned, managed, and operated by iFuture LLC.
                     </p>
 
-                    <h3 className="text-lg font-bold border-b border-gray-300 pb-2 mt-6">2. قيمة الاستثمار وملكية الأسهم</h3>
-                    <p>
-                        قام المستثمر بدفع مبلغ مقداره <strong>${Number(investment?.amount || 0).toLocaleString()} USD</strong>
-                        بنجاح، ومقابل ذلك يحصل على <strong>{investment?.shares}</strong> أصل سهم من إجمالي أسهم المشروع.
+                    <h3 className="text-xl font-bold text-[#0B0B0B] border-b border-[#EAEAEA] pb-2 mt-8 mb-4 w-fit pr-8" style={{ fontFamily: '"Times New Roman", Times, serif' }}>2. Investment Amount and Equity</h3>
+                    <p className="text-[15px] mb-6">
+                        The Investor agrees to invest the total amount of:
+                        <div className="bg-[#FDFBEE] border border-[#C8A951] text-center p-4 rounded-md my-4 text-xl font-bold text-[#C8A951]">
+                            ${Number(investment?.amount || 0).toLocaleString()} USD
+                        </div>
+                        in exchange for an equity ownership of:
+                        <div className="bg-[#FDFBEE] border border-[#C8A951] text-center p-4 rounded-md my-4 text-xl font-bold text-[#C8A951]">
+                            {investment?.shares} Shares
+                        </div>
+                        in the project specified above.
                     </p>
 
-                    <h3 className="text-lg font-bold border-b border-gray-300 pb-2 mt-6">3. الإقرار والتوقيع</h3>
-                    <p>
-                        يقر المستثمر باطلاعه على طبيعة المشروع وإدراكه لمخاطر الاستثمار الرقمي.
-                        ويوافق الطرفان على أن التوقيع الإلكتروني أدناه يعتبر توقيعاً ملزماً قانونياً ولا يحتاج إلى تصديق ورقي إضافي.
-                    </p>
+                    <h3 className="text-xl font-bold text-[#0B0B0B] border-b border-[#EAEAEA] pb-2 mt-8 mb-4 w-fit pr-8" style={{ fontFamily: '"Times New Roman", Times, serif' }}>3. Protection, Risk, and Compliance</h3>
+                    <ul className="list-none pl-0 space-y-3 text-[15px] mb-8">
+                        <li className="relative pl-5 before:content-['•'] before:absolute before:left-0 before:text-[#C8A951] before:text-lg before:-top-1">
+                            <strong>Investor Protection:</strong> The Investor's equity ownership will be respected and recorded in the Company's internal equity registry.
+                        </li>
+                        <li className="relative pl-5 before:content-['•'] before:absolute before:left-0 before:text-[#C8A951] before:text-lg before:-top-1">
+                            <strong>Electronic Signature:</strong> The Parties agree that electronic signatures executed through the Company's digital platform shall be legally binding and equivalent to handwritten signatures. This Agreement shall be governed by the applicable laws in which iFuture LLC operates.
+                        </li>
+                    </ul>
                 </div>
 
                 {/* Signature UI */}
