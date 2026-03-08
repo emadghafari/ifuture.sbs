@@ -19,6 +19,8 @@ export default function SignContract(props: { params: Promise<{ slug: string }> 
     const [success, setSuccess] = useState(false);
     const [contractUrl, setContractUrl] = useState('');
     const [phone, setPhone] = useState('');
+    const [passportNumber, setPassportNumber] = useState('');
+    const [passportExpiry, setPassportExpiry] = useState('');
     const [passportFile, setPassportFile] = useState<File | null>(null);
 
     const sigCanvas = useRef<any>(null);
@@ -62,10 +64,10 @@ export default function SignContract(props: { params: Promise<{ slug: string }> 
     };
 
     const submitSignature = async () => {
-        const needsKyc = !investment?.user?.phone || !investment?.user?.passport_path;
+        const needsKyc = !investment?.user?.phone || !investment?.user?.passport_path || !investment?.user?.passport_number || !investment?.user?.passport_expiry;
 
-        if (needsKyc && (!phone || !passportFile)) {
-            setError('Please provide your phone number and upload your passport to complete the contract.');
+        if (needsKyc && (!phone || !passportFile || !passportNumber || !passportExpiry)) {
+            setError('Please provide your phone number, passport number, passport expiry date, and upload your passport to complete the contract.');
             return;
         }
 
@@ -84,6 +86,8 @@ export default function SignContract(props: { params: Promise<{ slug: string }> 
             formData.append('signature', signatureBase64);
             if (needsKyc) {
                 formData.append('phone', phone);
+                formData.append('passport_number', passportNumber);
+                formData.append('passport_expiry', passportExpiry);
                 if (passportFile) {
                     formData.append('passport_file', passportFile);
                 }
@@ -170,7 +174,8 @@ export default function SignContract(props: { params: Promise<{ slug: string }> 
                         <h3 className="text-xl text-[#0B0B0B] font-bold border-b border-[#EAEAEA] pb-2 mb-3" style={{ fontFamily: '"Times New Roman", Times, serif' }}>Investor:</h3>
                         <div className="text-[15px]">
                             Name: <strong>{investment?.user?.name || 'N/A'}</strong><br />
-                            ID / Reference: <strong>#{investment?.user?.id || 'N/A'}</strong><br />
+                            ID / Passport: <strong>{investment?.user?.passport_number || 'N/A'}</strong><br />
+                            Passport Expiry: <strong>{investment?.user?.passport_expiry ? new Date(investment?.user?.passport_expiry).toLocaleDateString() : 'N/A'}</strong><br />
                             <em className="text-gray-500 block mt-2">Hereinafter referred to as "the Investor"</em>
                         </div>
                     </div>
@@ -210,11 +215,11 @@ export default function SignContract(props: { params: Promise<{ slug: string }> 
                     </ul>
                 </div>
 
-                {(!investment?.user?.phone || !investment?.user?.passport_path) && (
+                {(!investment?.user?.phone || !investment?.user?.passport_path || !investment?.user?.passport_number || !investment?.user?.passport_expiry) && (
                     <div className="bg-[#091512] rounded-3xl border border-primary-500/20 p-8 shadow-[0_20px_50px_rgba(0,0,0,0.5)] mb-8">
                         <div className="mb-6">
                             <h3 className="font-bold text-xl text-primary-400 mb-2">Required KYC Information</h3>
-                            <p className="text-sm text-slate-400">To secure your investment, you must provide your phone number with country code and a copy of your passport or national ID.</p>
+                            <p className="text-sm text-slate-400">To secure your investment, you must provide your phone number, explicit passport details, and a copy of your passport or national ID.</p>
                         </div>
                         <div className="space-y-6">
                             <div>
@@ -226,6 +231,27 @@ export default function SignContract(props: { params: Promise<{ slug: string }> 
                                     placeholder="+1 234 567 8900"
                                     className="w-full bg-[#040D0A] border border-white/10 rounded-xl px-4 py-3 text-white placeholder-slate-600 focus:outline-none focus:border-primary-500 transition-colors"
                                 />
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label className="block text-sm font-bold text-slate-300 mb-2">ID / Passport Number</label>
+                                    <input
+                                        type="text"
+                                        value={passportNumber}
+                                        onChange={(e) => setPassportNumber(e.target.value)}
+                                        placeholder="e.g. A12345678"
+                                        className="w-full bg-[#040D0A] border border-white/10 rounded-xl px-4 py-3 text-white placeholder-slate-600 focus:outline-none focus:border-primary-500 transition-colors"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-bold text-slate-300 mb-2">Passport Expiry Date</label>
+                                    <input
+                                        type="date"
+                                        value={passportExpiry}
+                                        onChange={(e) => setPassportExpiry(e.target.value)}
+                                        className="w-full bg-[#040D0A] border border-white/10 rounded-xl px-4 py-3 text-white placeholder-slate-600 focus:outline-none focus:border-primary-500 transition-colors"
+                                    />
+                                </div>
                             </div>
                             <div>
                                 <label className="block text-sm font-bold text-slate-300 mb-2">Passport Upload (PDF/Image)</label>
