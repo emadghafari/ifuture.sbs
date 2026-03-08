@@ -101,9 +101,16 @@ export default function AdminInvestorsPage() {
                                                                 <span className="text-xs font-bold text-slate-300 truncate max-w-[120px]" title={inv.project?.title || 'Unknown Project'}>
                                                                     {inv.project?.title || 'Unknown Project'}
                                                                 </span>
-                                                                <span className="text-xs font-black text-primary-400 bg-white/5 px-1.5 rounded shadow-sm border border-white/10 ml-2">
-                                                                    ${Number(inv.amount).toLocaleString()}
-                                                                </span>
+                                                                <div className="flex items-center gap-2">
+                                                                    <span className="text-xs font-black text-primary-400 bg-white/5 px-1.5 rounded shadow-sm border border-white/10 ml-2">
+                                                                        ${Number(inv.amount).toLocaleString()}
+                                                                    </span>
+                                                                    {inv.contract_pdf_path && (
+                                                                        <a href={inv.contract_pdf_path.startsWith('http') ? inv.contract_pdf_path : `${process.env.NEXT_PUBLIC_API_URL}${inv.contract_pdf_path}`} target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-white" title="Download Contract">
+                                                                            <svg className="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                                                                        </a>
+                                                                    )}
+                                                                </div>
                                                             </div>
                                                         ))}
                                                     </div>
