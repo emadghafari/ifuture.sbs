@@ -25,6 +25,27 @@ export default function AdminInvestorsPage() {
         fetchInvestors();
     }, []);
 
+    const handleDeleteInvestor = async (id: number, name: string) => {
+        if (!confirm(`Are you sure you want to completely delete ${name} and all their data? This action cannot be undone.`)) {
+            return;
+        }
+
+        try {
+            const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.ifuture.sbs';
+            const res = await adminFetch(`${API_URL}/api/admin/investors/${id}`, {
+                method: 'DELETE',
+            });
+
+            if (!res.ok) throw new Error('Failed to delete investor');
+
+            // Remove from state
+            setInvestors(prev => prev.filter(inv => inv.id !== id));
+            alert('Investor deleted successfully.');
+        } catch (err) {
+            alert('Failed to delete investor. Error: ' + err);
+        }
+    };
+
     if (loading) {
         return (
             <div className="flex justify-center items-center h-64">
@@ -62,6 +83,7 @@ export default function AdminInvestorsPage() {
                                 <th className="p-4 border-b border-white/10">Total Backed</th>
                                 <th className="p-4 border-b border-white/10">Project Portfolio</th>
                                 <th className="p-4 border-b border-white/10">Joined Date</th>
+                                <th className="p-4 border-b border-white/10 text-right">Actions</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-white/5">
@@ -122,6 +144,16 @@ export default function AdminInvestorsPage() {
 
                                             <td className="p-4 text-sm text-slate-400 font-medium">
                                                 {new Date(investor.created_at).toLocaleDateString()}
+                                            </td>
+
+                                            <td className="p-4 text-right">
+                                                <button
+                                                    onClick={() => handleDeleteInvestor(investor.id, investor.name)}
+                                                    className="px-3 py-1.5 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white rounded border border-red-500/20 text-xs font-bold transition-colors shadow-sm"
+                                                    title="Delete test investor"
+                                                >
+                                                    Delete
+                                                </button>
                                             </td>
                                         </tr>
                                     );
