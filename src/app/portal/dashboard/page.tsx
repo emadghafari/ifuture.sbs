@@ -248,7 +248,7 @@ export default function InvestorDashboard() {
 
                                                 {inv.contract_pdf_path && (
                                                     <div className="mb-6">
-                                                        <a href={inv.contract_pdf_path.startsWith('http') ? inv.contract_pdf_path : `${process.env.NEXT_PUBLIC_API_URL}${inv.contract_pdf_path}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-bold rounded-xl transition-colors border border-slate-700">
+                                                        <a href={inv.contract_pdf_path.startsWith('http') ? inv.contract_pdf_path : `https://api.ifuture.sbs${inv.contract_pdf_path}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-bold rounded-xl transition-colors border border-slate-700">
                                                             <svg className="w-4 h-4 text-primary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                                                             Download Contract Document
                                                         </a>
