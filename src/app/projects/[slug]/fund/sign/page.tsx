@@ -89,14 +89,8 @@ export default function SignContract(props: { params: Promise<{ slug: string }> 
                 }
             }
 
-            const token = localStorage.getItem('token') || typeof window !== 'undefined' ? document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1] : null;
-
-            const res = await fetch(`${API_URL}/api/investor/investments/${investmentId}/sign`, {
+            const res = await fetchWithAuth(`${API_URL}/api/investor/investments/${investmentId}/sign`, {
                 method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Accept': 'application/json'
-                },
                 body: formData
             });
 
