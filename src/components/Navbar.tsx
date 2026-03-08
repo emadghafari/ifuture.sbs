@@ -52,7 +52,7 @@ const Navbar = ({ site }: { site?: any }) => {
                         </div>
                     )}
                     <span className="text-xl font-bold text-white tracking-tight group-hover:text-gold-400 transition-colors">
-                        {site?.name || 'iFuture Hub'}
+                        {site?.name || 'iFuture SBS'}
                     </span>
                 </Link>
 

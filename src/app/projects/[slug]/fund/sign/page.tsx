@@ -18,6 +18,8 @@ export default function SignContract(props: { params: Promise<{ slug: string }> 
     const [error, setError] = useState('');
     const [success, setSuccess] = useState(false);
     const [contractUrl, setContractUrl] = useState('');
+    const [phone, setPhone] = useState('');
+    const [passportFile, setPassportFile] = useState<File | null>(null);
 
     const sigCanvas = useRef<any>(null);
 
@@ -60,6 +62,13 @@ export default function SignContract(props: { params: Promise<{ slug: string }> 
     };
 
     const submitSignature = async () => {
+        const needsKyc = !investment?.user?.phone || !investment?.user?.passport_path;
+
+        if (needsKyc && (!phone || !passportFile)) {
+            setError('Please provide your phone number and upload your passport to complete the contract.');
+            return;
+        }
+
         if (!sigCanvas.current || sigCanvas.current.isEmpty()) {
             setError('Please provide your signature before confirming.');
             return;
@@ -71,10 +80,24 @@ export default function SignContract(props: { params: Promise<{ slug: string }> 
         const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.ifuture.sbs';
 
         try {
-            const res = await fetchWithAuth(`${API_URL}/api/investor/investments/${investmentId}/sign`, {
+            const formData = new FormData();
+            formData.append('signature', signatureBase64);
+            if (needsKyc) {
+                formData.append('phone', phone);
+                if (passportFile) {
+                    formData.append('passport_file', passportFile);
+                }
+            }
+
+            const token = localStorage.getItem('token') || typeof window !== 'undefined' ? document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1] : null;
+
+            const res = await fetch(`${API_URL}/api/investor/investments/${investmentId}/sign`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ signature: signatureBase64 })
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Accept': 'application/json'
+                },
+                body: formData
             });
 
             const data = await res.json();
@@ -127,10 +150,10 @@ export default function SignContract(props: { params: Promise<{ slug: string }> 
                 <h1 className="text-3xl md:text-4xl font-black text-white text-center mb-10">Electronic Investment Agreement</h1>
 
                 {/* Contract Text Sandbox */}
-                <div className="bg-white text-[#1E1E1E] p-8 md:p-12 rounded-t-3xl shadow-xl max-w-none text-left" dir="ltr" style={{ fontFamily: 'Arial, Helvetica, sans-serif', lineHeight: '1.6' }}>
+                <div className="bg-white text-[#1E1E1E] p-8 md:p-12 rounded-3xl mb-8 shadow-xl max-w-none text-left" dir="ltr" style={{ fontFamily: 'Arial, Helvetica, sans-serif', lineHeight: '1.6' }}>
 
                     <div className="text-center border-b-2 border-[#C8A951] pb-6 mb-8">
-                        <h1 className="text-3xl md:text-4xl font-bold text-[#0B0B0B] mb-2" style={{ fontFamily: '"Times New Roman", Times, serif' }}>iFuture Hub</h1>
+                        <h1 className="text-3xl md:text-4xl font-bold text-[#0B0B0B] mb-2" style={{ fontFamily: '"Times New Roman", Times, serif' }}>iFuture SBS</h1>
                         <p className="text-[#C8A951] uppercase tracking-widest text-sm font-bold mb-6">Premium Digital Investment Platform</p>
                         <h2 className="text-2xl font-normal text-[#0B0B0B] m-0 uppercase tracking-wide" style={{ fontFamily: '"Times New Roman", Times, serif' }}>Equity Investment Agreement</h2>
                     </div>
@@ -142,7 +165,7 @@ export default function SignContract(props: { params: Promise<{ slug: string }> 
                     <div className="bg-[#FAFAFA] border border-[#EAEAEA] border-l-4 border-l-[#C8A951] p-5 rounded-md mb-6">
                         <h3 className="text-xl text-[#0B0B0B] font-bold border-b border-[#EAEAEA] pb-2 mb-3" style={{ fontFamily: '"Times New Roman", Times, serif' }}>Company:</h3>
                         <div className="text-[15px]">
-                            <strong>iFuture Hub (iFuture LLC)</strong><br />
+                            <strong>iFuture SBS</strong><br />
                             A technology company specializing in digital platforms, software solutions, and SaaS systems.<br />
                             Represented by: <strong>Emad Ghafari</strong><br />
                             <em className="text-gray-500 block mt-2">Hereinafter referred to as "the Company"</em>
@@ -166,7 +189,7 @@ export default function SignContract(props: { params: Promise<{ slug: string }> 
                     <p className="text-[15px] mb-6">
                         The Investor agrees to invest in the following project developed and operated by the Company:<br /><br />
                         <strong>{investment?.project?.title || 'N/A'}</strong><br /><br />
-                        The project is a digital system / platform, and is fully owned, managed, and operated by iFuture LLC.
+                        The project is a digital system / platform, and is fully owned, managed, and operated by iFuture SBS.
                     </p>
 
                     <h3 className="text-xl font-bold text-[#0B0B0B] border-b border-[#EAEAEA] pb-2 mt-8 mb-4 w-fit pr-8" style={{ fontFamily: '"Times New Roman", Times, serif' }}>2. Investment Amount and Equity</h3>
@@ -188,13 +211,43 @@ export default function SignContract(props: { params: Promise<{ slug: string }> 
                             <strong>Investor Protection:</strong> The Investor's equity ownership will be respected and recorded in the Company's internal equity registry.
                         </li>
                         <li className="relative pl-5 before:content-['•'] before:absolute before:left-0 before:text-[#C8A951] before:text-lg before:-top-1">
-                            <strong>Electronic Signature:</strong> The Parties agree that electronic signatures executed through the Company's digital platform shall be legally binding and equivalent to handwritten signatures. This Agreement shall be governed by the applicable laws in which iFuture LLC operates.
+                            <strong>Electronic Signature:</strong> The Parties agree that electronic signatures executed through the Company's digital platform shall be legally binding and equivalent to handwritten signatures. This Agreement shall be governed by the applicable laws in which iFuture SBS operates.
                         </li>
                     </ul>
                 </div>
 
+                {(!investment?.user?.phone || !investment?.user?.passport_path) && (
+                    <div className="bg-[#091512] rounded-3xl border border-primary-500/20 p-8 shadow-[0_20px_50px_rgba(0,0,0,0.5)] mb-8">
+                        <div className="mb-6">
+                            <h3 className="font-bold text-xl text-primary-400 mb-2">Required KYC Information</h3>
+                            <p className="text-sm text-slate-400">To secure your investment, you must provide your phone number with country code and a copy of your passport or national ID.</p>
+                        </div>
+                        <div className="space-y-6">
+                            <div>
+                                <label className="block text-sm font-bold text-slate-300 mb-2">Phone Number (with Country Code)</label>
+                                <input
+                                    type="text"
+                                    value={phone}
+                                    onChange={(e) => setPhone(e.target.value)}
+                                    placeholder="+1 234 567 8900"
+                                    className="w-full bg-[#040D0A] border border-white/10 rounded-xl px-4 py-3 text-white placeholder-slate-600 focus:outline-none focus:border-primary-500 transition-colors"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-bold text-slate-300 mb-2">Passport Upload (PDF/Image)</label>
+                                <input
+                                    type="file"
+                                    accept=".pdf,.jpg,.jpeg,.png"
+                                    onChange={(e) => setPassportFile(e.target.files ? e.target.files[0] : null)}
+                                    className="w-full bg-[#040D0A] border border-white/10 rounded-xl px-4 py-3 text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary-500/20 file:text-primary-400 hover:file:bg-primary-500/30 transition-colors cursor-pointer"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                )}
+
                 {/* Signature UI */}
-                <div className="bg-[#091512] rounded-b-3xl border border-white/10 p-8 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+                <div className="bg-[#091512] rounded-3xl border border-white/10 p-8 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
                     <div className="mb-6 flex justify-between items-center text-white">
                         <div>
                             <h3 className="font-bold text-lg text-primary-400">Please Sign Below</h3>

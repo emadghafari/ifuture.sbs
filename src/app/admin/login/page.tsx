@@ -79,7 +79,7 @@ export default function AdminLogin() {
             <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10">
                 <div className="text-center mb-6">
                     <Link href="/" className="inline-block">
-                        <span className="text-3xl font-extrabold bg-gradient-to-r from-primary-400 to-emerald-300 bg-clip-text text-transparent">iFuture Hub</span>
+                        <span className="text-3xl font-extrabold bg-gradient-to-r from-primary-400 to-emerald-300 bg-clip-text text-transparent">iFuture SBS</span>
                     </Link>
                 </div>
                 <h2 className="text-center text-3xl font-extrabold text-white tracking-tight">
@@ -94,7 +94,7 @@ export default function AdminLogin() {
                 <div className="bg-[#091512]/95 backdrop-blur-3xl border border-white/10 rounded-[2rem] p-8 sm:p-12 shadow-2xl">
                     <div className="text-center mb-10">
                         <h1 className="text-3xl font-bold text-white mb-2">Admin Portal</h1>
-                        <p className="text-slate-400">iFuture Hub CMS</p>
+                        <p className="text-slate-400">iFuture SBS CMS</p>
                     </div>
 
                     <form onSubmit={handleLogin} className="space-y-6">

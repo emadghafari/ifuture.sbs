@@ -20,7 +20,7 @@ const Footer = ({ site }: { site?: any }) => {
                                 </div>
                             )}
                             <span className="text-2xl font-bold tracking-tight text-white hover:text-gold-400 transition-colors">
-                                {site?.name || 'iFuture Hub'}
+                                {site?.name || 'iFuture SBS'}
                             </span>
                         </Link>
                         <p className="text-sm font-medium leading-relaxed max-w-sm">
@@ -91,7 +91,7 @@ const Footer = ({ site }: { site?: any }) => {
                 </div>
 
                 <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-xs font-bold text-slate-500">
-                    <p dir="ltr" className="text-left md:text-right">{site?.copyright || `© ${new Date().getFullYear()} iFuture Hub. All rights reserved.`}</p>
+                    <p dir="ltr" className="text-left md:text-right">{site?.copyright || `© ${new Date().getFullYear()} iFuture SBS. All rights reserved.`}</p>
                     <div className="flex space-x-6 rtl:space-x-reverse mt-6 md:mt-0">
                         <a href="#" className="hover:text-slate-300 transition-colors">{t('footer_privacy')}</a>
                         <a href="#" className="hover:text-slate-300 transition-colors">{t('footer_terms')}</a>

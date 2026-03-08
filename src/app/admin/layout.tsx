@@ -48,7 +48,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <div className="flex items-center justify-between px-6 py-5 border-b border-white/10">
                     <div className="flex items-center gap-3 cursor-pointer hover:text-white hover:scale-105 transition-all duration-300">
                         <div className="w-6 h-6 bg-white/10 border border-white/20 rounded flex items-center justify-center text-xs shadow-sm">👥</div>
-                        <span className="font-semibold text-[0.95rem]">iFuture Hub</span>
+                        <span className="font-semibold text-[0.95rem]">iFuture SBS</span>
                     </div>
                 </div>
 
@@ -167,7 +167,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                                         <div className="w-2 h-2 mt-1.5 rounded-full bg-primary-500 shadow-[0_0_10px_rgba(4,120,87,0.8)]"></div>
                                         <div>
                                             <p className="text-white font-medium leading-tight">System Initialization Complete</p>
-                                            <p className="text-slate-400 text-xs mt-1">iFuture Hub is live.</p>
+                                            <p className="text-slate-400 text-xs mt-1">iFuture SBS is live.</p>
                                         </div>
                                     </div>
                                     <div className="flex gap-3">

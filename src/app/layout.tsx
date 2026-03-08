@@ -8,8 +8,8 @@ const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit" });
 
 export async function generateMetadata(): Promise<Metadata> {
   const defaultMeta = {
-    title: "iFuture Hub - Smart Digital Solutions",
-    description: "iFuture Hub provides smart digital solutions for business platforms and services.",
+    title: "iFuture SBS - Smart Digital Solutions",
+    description: "iFuture SBS provides smart digital solutions for business platforms and services.",
   };
 
   try {
