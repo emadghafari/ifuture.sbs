@@ -65,7 +65,8 @@ export default function FundProject(props: { params: Promise<{ slug: string }> }
             });
 
             if (res.ok) {
-                router.push('/portal/dashboard');
+                const data = await res.json();
+                router.push(`/projects/${project.slug}/fund/sign?investment_id=${data.investment.id}`);
             } else {
                 const data = await res.json();
                 setError(data.message || 'Payment simulation failed.');
