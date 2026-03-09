@@ -63,7 +63,7 @@ export default function Register() {
                 setCodeSent(true);
                 setSuccessMessage('Verification code sent to your email.');
             } else {
-                setError(data.message || 'Failed to send verification code. Email might be in use.');
+                setError(data.message ? `Server Issue: ${data.message}` : 'Server Error: Failed to send verification code.');
             }
         } catch (err) {
             setError('System error. Please try again.');
