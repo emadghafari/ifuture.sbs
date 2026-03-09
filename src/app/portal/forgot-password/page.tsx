@@ -8,6 +8,14 @@ export default function ForgotPassword() {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
+    const getCookie = (name: string) => {
+        if (typeof document === 'undefined') return '';
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return decodeURIComponent(parts.pop()?.split(';').shift() || '');
+        return '';
+    };
+
     const handleForgot = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
@@ -17,12 +25,20 @@ export default function ForgotPassword() {
         try {
             const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.ifuture.sbs';
 
+            // CSRF Cookie
+            await fetch(`${API_URL}/sanctum/csrf-cookie`, {
+                method: 'GET',
+                credentials: 'include'
+            });
+
             const res = await fetch(`${API_URL}/api/auth/forgot-password`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
+                    'X-XSRF-TOKEN': getCookie('XSRF-TOKEN'),
                 },
+                credentials: 'include',
                 body: JSON.stringify({ email })
             });
 
