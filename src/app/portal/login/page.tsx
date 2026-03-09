@@ -116,9 +116,9 @@ function LoginForm() {
                             </div>
 
                             <div className="text-sm">
-                                <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
+                                <Link href="/portal/forgot-password" className="font-medium text-indigo-600 hover:text-indigo-500">
                                     Forgot password?
-                                </a>
+                                </Link>
                             </div>
                         </div>
 
