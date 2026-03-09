@@ -23,10 +23,23 @@ export default function Register() {
     const [sendingCode, setSendingCode] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
     const [codeSent, setCodeSent] = useState(false);
+    const [resendTimer, setResendTimer] = useState(0);
+
+    React.useEffect(() => {
+        let interval: NodeJS.Timeout;
+        if (resendTimer > 0) {
+            interval = setInterval(() => {
+                setResendTimer((prev) => prev - 1);
+            }, 1000);
+        }
+        return () => clearInterval(interval);
+    }, [resendTimer]);
 
     const handleSendCode = async () => {
         setError('');
         setSuccessMessage('');
+
+        if (resendTimer > 0) return;
 
         if (!email) {
             return setError('Please enter your email address first.');
@@ -61,6 +74,7 @@ export default function Register() {
 
             if (res.ok) {
                 setCodeSent(true);
+                setResendTimer(60);
                 setSuccessMessage('Verification code sent to your email.');
             } else {
                 setError(data.message ? `Server Issue: ${data.message}` : 'Server Error: Failed to send verification code.');
@@ -183,11 +197,11 @@ export default function Register() {
                                 <input required type="email" value={email} onChange={e => setEmail(e.target.value)} className="appearance-none block w-full px-4 py-3 border border-slate-300 rounded-xl shadow-sm placeholder-slate-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-slate-800 flex-1" placeholder="info@ifuture.sbs" />
                                 <button
                                     type="button"
-                                    disabled={sendingCode || !email || codeSent}
+                                    disabled={sendingCode || !email || resendTimer > 0}
                                     onClick={handleSendCode}
                                     className="whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-slate-800 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 disabled:opacity-50 transition-colors"
                                 >
-                                    {sendingCode ? 'Sending...' : (codeSent ? 'Code Sent' : 'Send Code')}
+                                    {sendingCode ? 'Sending...' : (resendTimer > 0 ? `Resend in ${resendTimer}s` : (codeSent ? 'Resend Code' : 'Send Code'))}
                                 </button>
                             </div>
                         </div>
