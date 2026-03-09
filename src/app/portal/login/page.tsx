@@ -24,6 +24,14 @@ function LoginForm() {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
+    React.useEffect(() => {
+        const urlError = searchParams.get('error');
+        const details = searchParams.get('details');
+        if (urlError) {
+            setError(urlError.replace(/_/g, ' ') + (details ? `: ${details}` : ''));
+        }
+    }, [searchParams]);
+
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
