@@ -13,7 +13,6 @@ export default function Register() {
     };
 
     const router = useRouter();
-    const [step, setStep] = useState(1);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -21,17 +20,24 @@ export default function Register() {
     const [verificationCode, setVerificationCode] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const [sendingCode, setSendingCode] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
+    const [codeSent, setCodeSent] = useState(false);
 
-    const handleRegister = async (e: React.FormEvent) => {
-        e.preventDefault();
+    const handleSendCode = async () => {
         setError('');
+        setSuccessMessage('');
 
-        if (password !== passwordConfirm) {
-            return setError('Passwords do not match');
+        if (!email) {
+            return setError('Please enter your email address first.');
         }
 
-        setLoading(true);
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return setError('Please enter a valid email address.');
+        }
+
+        setSendingCode(true);
         try {
             const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.ifuture.sbs';
 
@@ -39,6 +45,48 @@ export default function Register() {
                 method: 'GET',
                 credentials: 'include'
             });
+
+            const res = await fetch(`${API_URL}/api/auth/send-registration-code`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-XSRF-TOKEN': getCookie('XSRF-TOKEN'),
+                },
+                credentials: 'include',
+                body: JSON.stringify({ email })
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+                setCodeSent(true);
+                setSuccessMessage('Verification code sent to your email.');
+            } else {
+                setError(data.message || 'Failed to send verification code. Email might be in use.');
+            }
+        } catch (err) {
+            setError('System error. Please try again.');
+        }
+        setSendingCode(false);
+    };
+
+    const handleRegister = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setError('');
+        setSuccessMessage('');
+
+        if (password !== passwordConfirm) {
+            return setError('Passwords do not match');
+        }
+
+        if (verificationCode.length !== 5) {
+            return setError('Please enter the 5-digit verification code sent to your email.');
+        }
+
+        setLoading(true);
+        try {
+            const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.ifuture.sbs';
 
             const res = await fetch(`${API_URL}/api/auth/register`, {
                 method: 'POST',
@@ -53,56 +101,13 @@ export default function Register() {
                     email,
                     password,
                     password_confirmation: passwordConfirm,
-                    role: 'investor'
+                    role: 'investor',
+                    verification_code: verificationCode
                 })
             });
 
             if (res.ok) {
-                const data = await res.json();
-                if (data.requires_verification) {
-                    setStep(2);
-                } else {
-                    router.push('/portal/login');
-                }
-            } else {
-                const data = await res.json();
-                setError(data.message || 'Registration failed');
-            }
-        } catch (err) {
-            setError('System error. Please try again.');
-        }
-        setLoading(false);
-    };
-
-    const handleVerify = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setError('');
-        setSuccessMessage('');
-
-        if (verificationCode.length !== 5) {
-            return setError('Please enter a valid 5-digit code.');
-        }
-
-        setLoading(true);
-        try {
-            const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.ifuture.sbs';
-
-            const res = await fetch(`${API_URL}/api/auth/verify-email`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'X-XSRF-TOKEN': getCookie('XSRF-TOKEN'),
-                },
-                credentials: 'include',
-                body: JSON.stringify({
-                    email,
-                    code: verificationCode
-                })
-            });
-
-            if (res.ok) {
-                // login and redirect
+                // Auto login after successful registration since email is verified
                 const loginRes = await fetch(`${API_URL}/api/auth/login`, {
                     method: 'POST',
                     headers: {
@@ -119,41 +124,13 @@ export default function Register() {
                 } else {
                     router.push('/portal/login');
                 }
-
             } else {
                 const data = await res.json();
-                setError(data.message || 'Verification failed');
-            }
-        } catch (err) {
-            setError('System error. Please try again.');
-        }
-        setLoading(false);
-    };
-
-    const handleResendCode = async () => {
-        setError('');
-        setSuccessMessage('');
-        setLoading(true);
-        try {
-            const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.ifuture.sbs';
-
-            const res = await fetch(`${API_URL}/api/auth/resend-verification`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'X-XSRF-TOKEN': getCookie('XSRF-TOKEN'),
-                },
-                credentials: 'include',
-                body: JSON.stringify({ email })
-            });
-
-            const data = await res.json();
-
-            if (res.ok) {
-                setSuccessMessage('A new verification code has been sent to your email.');
-            } else {
-                setError(data.message || 'Failed to resend code');
+                if (data.errors && data.errors.verification_code) {
+                    setError(data.errors.verification_code[0]);
+                } else {
+                    setError(data.message || 'Registration failed');
+                }
             }
         } catch (err) {
             setError('System error. Please try again.');
@@ -166,22 +143,15 @@ export default function Register() {
             <div className="sm:mx-auto sm:w-full sm:max-w-md">
                 <div className="text-center mb-6">
                     <Link href="/" className="inline-block">
-                        <span className="text-3xl font-extrabold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">iFuture</span>
+                        <span className="text-3xl font-extrabold text-blue-600">iFuture</span>
                     </Link>
                 </div>
                 <h2 className="text-center text-3xl font-extrabold text-slate-900">
-                    {step === 1 ? 'Create Investor Account' : 'Verify Your Email'}
+                    Create Investor Account
                 </h2>
-                {step === 1 && (
-                    <p className="mt-2 text-center text-sm text-slate-600">
-                        Or <Link href="/portal/login" className="font-medium text-indigo-600 hover:text-indigo-500">sign in to your existing account</Link>
-                    </p>
-                )}
-                {step === 2 && (
-                    <p className="mt-2 text-center text-sm text-slate-600">
-                        We sent a 5-digit code to <strong>{email}</strong>
-                    </p>
-                )}
+                <p className="mt-2 text-center text-sm text-slate-600">
+                    Or <Link href="/portal/login" className="font-medium text-indigo-600 hover:text-indigo-500">sign in to your existing account</Link>
+                </p>
             </div>
 
             <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md border border-slate-200 rounded-3xl overflow-hidden">
@@ -199,77 +169,57 @@ export default function Register() {
                         </div>
                     )}
 
-                    {step === 1 ? (
-                        <form className="space-y-6" onSubmit={handleRegister}>
-                            <div>
-                                <label className="block text-sm font-medium text-slate-700">Full Name</label>
-                                <div className="mt-1">
-                                    <input required type="text" value={name} onChange={e => setName(e.target.value)} className="appearance-none block w-full px-4 py-3 border border-slate-300 rounded-xl shadow-sm placeholder-slate-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-slate-800" />
-                                </div>
+                    <form className="space-y-6" onSubmit={handleRegister}>
+                        <div>
+                            <label className="block text-sm font-medium text-slate-700">Full Name</label>
+                            <div className="mt-1">
+                                <input required type="text" value={name} onChange={e => setName(e.target.value)} className="appearance-none block w-full px-4 py-3 border border-slate-300 rounded-xl shadow-sm placeholder-slate-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-slate-800" />
                             </div>
+                        </div>
 
-                            <div>
-                                <label className="block text-sm font-medium text-slate-700">Email address</label>
-                                <div className="mt-1">
-                                    <input required type="email" value={email} onChange={e => setEmail(e.target.value)} className="appearance-none block w-full px-4 py-3 border border-slate-300 rounded-xl shadow-sm placeholder-slate-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-slate-800" />
-                                </div>
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-slate-700">Password</label>
-                                <div className="mt-1">
-                                    <input required type="password" value={password} onChange={e => setPassword(e.target.value)} className="appearance-none block w-full px-4 py-3 border border-slate-300 rounded-xl shadow-sm placeholder-slate-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-slate-800" />
-                                </div>
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-slate-700">Confirm Password</label>
-                                <div className="mt-1">
-                                    <input required type="password" value={passwordConfirm} onChange={e => setPasswordConfirm(e.target.value)} className="appearance-none block w-full px-4 py-3 border border-slate-300 rounded-xl shadow-sm placeholder-slate-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-slate-800" />
-                                </div>
-                            </div>
-
-                            <div>
-                                <button disabled={loading} type="submit" className="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50">
-                                    {loading ? 'Creating...' : 'Register'}
-                                </button>
-                            </div>
-                        </form>
-                    ) : (
-                        <form className="space-y-6" onSubmit={handleVerify}>
-                            <div>
-                                <label className="block text-sm font-medium text-slate-700 text-center">Verification Code</label>
-                                <div className="mt-2 text-center">
-                                    <input
-                                        required
-                                        type="text"
-                                        maxLength={5}
-                                        value={verificationCode}
-                                        onChange={e => setVerificationCode(e.target.value.replace(/\D/g, ''))}
-                                        className="appearance-none inline-block w-40 text-center text-3xl tracking-widest px-4 py-4 border border-slate-300 rounded-xl shadow-sm placeholder-slate-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-slate-800"
-                                        placeholder="00000"
-                                    />
-                                </div>
-                            </div>
-
-                            <div>
-                                <button disabled={loading || verificationCode.length !== 5} type="submit" className="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50">
-                                    {loading ? 'Verifying...' : 'Verify Email'}
-                                </button>
-                            </div>
-
-                            <div className="text-center mt-4">
+                        <div>
+                            <label className="block text-sm font-medium text-slate-700">Email address</label>
+                            <div className="mt-1 flex gap-2">
+                                <input required type="email" value={email} onChange={e => setEmail(e.target.value)} className="appearance-none block w-full px-4 py-3 border border-slate-300 rounded-xl shadow-sm placeholder-slate-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-slate-800 flex-1" placeholder="info@ifuture.sbs" />
                                 <button
                                     type="button"
-                                    disabled={loading}
-                                    onClick={handleResendCode}
-                                    className="text-sm font-medium text-indigo-600 hover:text-indigo-500 disabled:opacity-50"
+                                    disabled={sendingCode || !email || codeSent}
+                                    onClick={handleSendCode}
+                                    className="whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-slate-800 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 disabled:opacity-50 transition-colors"
                                 >
-                                    Didn't receive a code? Resend
+                                    {sendingCode ? 'Sending...' : (codeSent ? 'Code Sent' : 'Send Code')}
                                 </button>
                             </div>
-                        </form>
-                    )}
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-slate-700">Verification Code</label>
+                            <div className="mt-1">
+                                <input required type="text" maxLength={5} value={verificationCode} onChange={e => setVerificationCode(e.target.value.replace(/\D/g, ''))} className="appearance-none block w-full px-4 py-3 border border-slate-300 rounded-xl shadow-sm placeholder-slate-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-slate-800 text-center tracking-widest text-lg font-mono" placeholder="00000" />
+                            </div>
+                            <p className="mt-1 text-xs text-slate-500">Enter the 5-digit code sent to your email address.</p>
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-slate-700">Password</label>
+                            <div className="mt-1">
+                                <input required type="password" value={password} onChange={e => setPassword(e.target.value)} className="appearance-none block w-full px-4 py-3 border border-slate-300 rounded-xl shadow-sm placeholder-slate-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-slate-800" />
+                            </div>
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-slate-700">Confirm Password</label>
+                            <div className="mt-1">
+                                <input required type="password" value={passwordConfirm} onChange={e => setPasswordConfirm(e.target.value)} className="appearance-none block w-full px-4 py-3 border border-slate-300 rounded-xl shadow-sm placeholder-slate-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-slate-800" />
+                            </div>
+                        </div>
+
+                        <div>
+                            <button disabled={loading} type="submit" className="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 transition-colors">
+                                {loading ? 'Registering...' : 'Register'}
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
