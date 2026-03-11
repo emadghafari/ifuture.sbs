@@ -130,6 +130,7 @@ export default function Home() {
         </section>
 
         <Team members={data.team} teamInfo={data.team_info} />
+
         <Footer site={data.site} />
       </div>
     </main>
