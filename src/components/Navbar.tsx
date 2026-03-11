@@ -58,11 +58,11 @@ const Navbar = ({ site }: { site?: any }) => {
 
                 {/* Centered Links */}
                 <div className="hidden md:flex items-center gap-8 md:gap-10">
-                    <Link href="/#home" className="text-sm font-medium text-slate-300 hover:text-white transition-colors">{t('nav_home')}</Link>
-                    <Link href="/#products" className="text-sm font-medium text-slate-300 hover:text-white transition-colors">{t('nav_products')}</Link>
+                    <Link href="/" className="text-sm font-medium text-slate-300 hover:text-white transition-colors">{t('nav_home')}</Link>
+                    <Link href="/products" className="text-sm font-medium text-slate-300 hover:text-white transition-colors">{t('nav_products')}</Link>
                     <Link href="/projects" className="text-sm font-medium text-gold-400 hover:text-white transition-colors">Campaigns</Link>
-                    <Link href="/#about" className="text-sm font-medium text-slate-300 hover:text-white transition-colors">{t('nav_about')}</Link>
-                    <Link href="/#contact" className="text-sm font-medium text-slate-300 hover:text-white transition-colors">{t('nav_contact')}</Link>
+                    <Link href="/about" className="text-sm font-medium text-slate-300 hover:text-white transition-colors">{t('nav_about')}</Link>
+                    <Link href="/contact" className="text-sm font-medium text-slate-300 hover:text-white transition-colors">{t('nav_contact')}</Link>
                 </div>
 
                 {/* Right Actions */}
@@ -117,10 +117,11 @@ const Navbar = ({ site }: { site?: any }) => {
             {isOpen && (
                 <div className="absolute top-20 left-4 right-4 bg-[#091512]/95 backdrop-blur-3xl border border-white/10 rounded-3xl p-6 shadow-2xl pointer-events-auto md:hidden">
                     <div className="flex flex-col space-y-4">
-                        <Link href="#home" className="text-white font-medium text-lg" onClick={() => setIsOpen(false)}>{t('nav_home')}</Link>
-                        <Link href="#products" className="text-white font-medium text-lg" onClick={() => setIsOpen(false)}>{t('nav_products')}</Link>
-                        <Link href="#about" className="text-white font-medium text-lg" onClick={() => setIsOpen(false)}>{t('nav_about')}</Link>
-                        <Link href="#contact" className="text-white font-medium text-lg" onClick={() => setIsOpen(false)}>{t('nav_contact')}</Link>
+                        <Link href="/" className="text-white font-medium text-lg" onClick={() => setIsOpen(false)}>{t('nav_home')}</Link>
+                        <Link href="/products" className="text-white font-medium text-lg" onClick={() => setIsOpen(false)}>{t('nav_products')}</Link>
+                        <Link href="/projects" className="text-white font-medium text-lg" onClick={() => setIsOpen(false)}>Campaigns</Link>
+                        <Link href="/about" className="text-white font-medium text-lg" onClick={() => setIsOpen(false)}>{t('nav_about')}</Link>
+                        <Link href="/contact" className="text-white font-medium text-lg" onClick={() => setIsOpen(false)}>{t('nav_contact')}</Link>
 
                         {user ? (
                             <Link href={user.role === 'admin' ? '/admin/dashboard' : '/portal/dashboard'} className="text-primary-400 font-medium text-lg" onClick={() => setIsOpen(false)}>{user.name.split(' ')[0]}'s Portal</Link>
