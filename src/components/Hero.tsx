@@ -46,10 +46,10 @@ const Hero = ({ hero }: { hero?: any }) => {
     };
 
     return (
-        <section ref={sectionRef} id="home" className="relative min-h-[100vh] bg-[#09090b] overflow-hidden flex items-center pt-24 pb-20">
-            {/* Background Base Gradients representing the dark canvas with subtle purple/blue glow on the left/top */}
-            <div className="absolute top-0 left-0 w-full h-[50vh] bg-gradient-to-br from-[#1c1a2b]/40 via-transparent to-transparent pointer-events-none"></div>
-            <div className="absolute top-[-20%] right-[-10%] w-[80vw] h-[80vw] rounded-full bg-[radial-gradient(circle,rgba(20,15,35,0.8)_0%,transparent_60%)] pointer-events-none"></div>
+        <section ref={sectionRef} id="home" className="relative min-h-[100vh] bg-[#030a08] overflow-hidden flex items-center pt-24 pb-20">
+            {/* Background Base Gradients representing the dark canvas with subtle green glow on the left/top */}
+            <div className="absolute top-0 left-0 w-full h-[50vh] bg-gradient-to-br from-primary-900/20 via-transparent to-transparent pointer-events-none"></div>
+            <div className="absolute top-[-20%] right-[-10%] w-[80vw] h-[80vw] rounded-full bg-[radial-gradient(circle,rgba(4,120,87,0.15)_0%,transparent_60%)] pointer-events-none"></div>
 
             <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-12 grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-8 items-center">
 
@@ -57,7 +57,7 @@ const Hero = ({ hero }: { hero?: any }) => {
                 <div className="flex flex-col items-start text-left rtl:text-right">
 
                     {/* Badge */}
-                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#4c3a7a] bg-[#1a142e]/50 text-[#a78bfa] text-xs font-semibold tracking-wide mb-8 shadow-[0_0_15px_rgba(167,139,250,0.1)]">
+                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary-500/30 bg-primary-900/20 text-primary-400 text-xs font-semibold tracking-wide mb-8 shadow-[0_0_15px_rgba(4,120,87,0.15)]">
                         <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" />
                         </svg>
@@ -109,15 +109,15 @@ const Hero = ({ hero }: { hero?: any }) => {
                     </div>
 
                     {/* Central Glow representing the Lightning Bolt */}
-                    <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[200px] h-[200px] bg-[#a855f7] rounded-full blur-[100px] opacity-40"></div>
+                    <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[200px] h-[200px] bg-primary-500 rounded-full blur-[100px] opacity-30"></div>
 
                     {/* Simulated Lightning Jagged Line (SVG) */}
-                    <svg className="absolute w-[150px] h-[200px] left-[40%] top-[25%] opacity-90 filter drop-shadow-[0_0_10px_#a855f7]" viewBox="0 0 100 200" fill="none" xmlns="http://www.w3.org/2000/svg" style={parallaxSecondary}>
+                    <svg className="absolute w-[150px] h-[200px] left-[40%] top-[25%] opacity-90 filter drop-shadow-[0_0_10px_rgba(4,120,87,0.6)]" viewBox="0 0 100 200" fill="none" xmlns="http://www.w3.org/2000/svg" style={parallaxSecondary}>
                         <path d="M70 10 L45 80 L65 85 L20 180" stroke="url(#paint0_linear)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
                         <defs>
                             <linearGradient id="paint0_linear" x1="45" y1="10" x2="45" y2="180" gradientUnits="userSpaceOnUse">
-                                <stop stopColor="#60a5fa" />
-                                <stop offset="1" stopColor="#d946ef" />
+                                <stop stopColor="#34d399" />
+                                <stop offset="1" stopColor="#059669" />
                             </linearGradient>
                         </defs>
                     </svg>
@@ -125,15 +125,15 @@ const Hero = ({ hero }: { hero?: any }) => {
                     {/* Top Floating Glass Card (W Logo) */}
                     <div className="absolute top-[10%] left-[35%] w-32 h-32 rounded-3xl bg-gradient-to-br from-slate-800/80 to-slate-900/90 backdrop-blur-xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex items-center justify-center transform rotate-12" style={parallaxPrimary}>
                         <div className="absolute inset-0 rounded-3xl bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMDUiLz4KPC9zdmc+')] opacity-50 mix-blend-overlay"></div>
-                        <svg className="w-14 h-14 text-blue-400 drop-shadow-[0_0_15px_rgba(96,165,250,0.6)] relative z-10" viewBox="0 0 24 24" fill="currentColor">
+                        <svg className="w-14 h-14 text-primary-400 drop-shadow-[0_0_15px_rgba(52,211,153,0.6)] relative z-10" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M12 2L2 22h5l5-10 5 10h5L12 2z" />
                         </svg>
                     </div>
 
                     {/* Bottom Floating Glass Card (Octagon Logo) */}
-                    <div className="absolute top-[45%] left-[20%] w-28 h-28 rounded-3xl bg-gradient-to-br from-[#2a1b3d]/90 to-[#1a1025]/90 backdrop-blur-xl border border-purple-500/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex items-center justify-center transform -rotate-6" style={{ ...parallaxSecondary, transitionDelay: '50ms' }}>
+                    <div className="absolute top-[45%] left-[20%] w-28 h-28 rounded-3xl bg-gradient-to-br from-[#092b1d]/90 to-[#03150e]/90 backdrop-blur-xl border border-primary-500/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex items-center justify-center transform -rotate-6" style={{ ...parallaxSecondary, transitionDelay: '50ms' }}>
                         <div className="absolute inset-0 rounded-3xl bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMDUiLz4KPC9zdmc+')] opacity-50 mix-blend-overlay"></div>
-                        <svg className="w-12 h-12 text-pink-300 drop-shadow-[0_0_15px_rgba(244,114,182,0.6)] relative z-10" viewBox="0 0 24 24" fill="currentColor">
+                        <svg className="w-12 h-12 text-primary-300 drop-shadow-[0_0_15px_rgba(52,211,153,0.6)] relative z-10" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M12 2L22 7v10l-10 5-10-5V7l10-5zm0 2.3L4.5 8.2v7.6L12 19.7l7.5-3.9V8.2L12 4.3z" />
                         </svg>
                     </div>
