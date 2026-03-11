@@ -17,7 +17,7 @@ export const Team = ({ members, teamInfo }: { members: any[]; teamInfo?: any }) 
     const info = teamInfo || defaultInfo;
 
     return (
-        <section className="py-32 bg-[#030a08] relative border-t border-white/5">
+        <section id="about" className="py-32 bg-[#030a08] relative border-t border-white/5">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div className="text-center mb-20">
                     <h2 className="text-[3rem] sm:text-[4rem] font-bold text-white tracking-tight mb-6 leading-[1.1]">{info.title}</h2>

@@ -44,8 +44,6 @@ export default function Home() {
       <Navbar site={data.site} />
       <div className="animate-page-enter">
         <Hero hero={data.hero} />
-        <AdvancedEngineering />
-        <About about={data.about} />
 
         {/* Platform Features / More Explanation Section */}
         <section className="py-24 bg-[#050f0c] border-t border-white/5 relative">
@@ -131,6 +129,7 @@ export default function Home() {
           </div>
         </section>
 
+        <AdvancedEngineering />
         <Team members={data.team} teamInfo={data.team_info} />
 
         <Footer site={data.site} />

@@ -61,7 +61,7 @@ const Navbar = ({ site }: { site?: any }) => {
                     <Link href="/" className="text-sm font-medium text-slate-300 hover:text-white transition-colors">{t('nav_home')}</Link>
                     <Link href="/products" className="text-sm font-medium text-slate-300 hover:text-white transition-colors">{t('nav_products')}</Link>
                     <Link href="/projects" className="text-sm font-medium text-gold-400 hover:text-white transition-colors">Campaigns</Link>
-                    <Link href="/about" className="text-sm font-medium text-slate-300 hover:text-white transition-colors">{t('nav_about')}</Link>
+                    <Link href="/#about" className="text-sm font-medium text-slate-300 hover:text-white transition-colors">{t('nav_about')}</Link>
                     <Link href="/contact" className="text-sm font-medium text-slate-300 hover:text-white transition-colors">{t('nav_contact')}</Link>
                 </div>
 
@@ -120,7 +120,7 @@ const Navbar = ({ site }: { site?: any }) => {
                         <Link href="/" className="text-white font-medium text-lg" onClick={() => setIsOpen(false)}>{t('nav_home')}</Link>
                         <Link href="/products" className="text-white font-medium text-lg" onClick={() => setIsOpen(false)}>{t('nav_products')}</Link>
                         <Link href="/projects" className="text-white font-medium text-lg" onClick={() => setIsOpen(false)}>Campaigns</Link>
-                        <Link href="/about" className="text-white font-medium text-lg" onClick={() => setIsOpen(false)}>{t('nav_about')}</Link>
+                        <Link href="/#about" className="text-white font-medium text-lg" onClick={() => setIsOpen(false)}>{t('nav_about')}</Link>
                         <Link href="/contact" className="text-white font-medium text-lg" onClick={() => setIsOpen(false)}>{t('nav_contact')}</Link>
 
                         {user ? (
