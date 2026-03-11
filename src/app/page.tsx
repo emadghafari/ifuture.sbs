@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
+import { AdvancedEngineering } from '@/components/AdvancedEngineering';
 import ProductsGrid from '@/components/ProductsGrid';
 import FeaturedProjects from '@/components/FeaturedProjects';
 import { About, Team } from '@/components/Segments';
@@ -43,6 +44,7 @@ export default function Home() {
       <Navbar site={data.site} />
       <div className="animate-page-enter">
         <Hero hero={data.hero} />
+        <AdvancedEngineering />
         <About about={data.about} />
 
         {/* Platform Features / More Explanation Section */}
