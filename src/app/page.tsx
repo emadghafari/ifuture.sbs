@@ -11,6 +11,7 @@ import ContactForm from '@/components/ContactForm';
 import Footer from '@/components/Footer';
 import { useLanguage } from '@/context/LanguageContext';
 import { fetchHomeData } from '@/utils/api';
+import { PromotionalVideo } from '@/components/PromotionalVideo';
 
 export default function Home() {
   const { language } = useLanguage();
@@ -129,6 +130,7 @@ export default function Home() {
           </div>
         </section>
 
+        <PromotionalVideo />
         <AdvancedEngineering />
         <Team members={data.team} teamInfo={data.team_info} />
 
