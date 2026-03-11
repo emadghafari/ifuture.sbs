@@ -39,7 +39,6 @@ export default function AboutPage() {
             <Navbar site={data.site} />
             <div className="animate-page-enter pt-32 min-h-[70vh] flex flex-col justify-center">
                 <About about={data.about} />
-                <Team members={data.team} teamInfo={data.team_info} />
             </div>
             <Footer site={data.site} />
         </main>
