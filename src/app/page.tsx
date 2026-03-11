@@ -41,13 +41,15 @@ export default function Home() {
   return (
     <main className="min-h-screen">
       <Navbar site={data.site} />
-      <Hero hero={data.hero} />
-      <ProductsGrid products={data.products} />
-      <FeaturedProjects projects={data.featured_projects} />
-      <About about={data.about} />
-      <Team members={data.team} teamInfo={data.team_info} />
-      <ContactForm site={data.site} />
-      <Footer site={data.site} />
+      <div className="animate-page-enter">
+        <Hero hero={data.hero} />
+        <ProductsGrid products={data.products} />
+        <FeaturedProjects projects={data.featured_projects} />
+        <About about={data.about} />
+        <Team members={data.team} teamInfo={data.team_info} />
+        <ContactForm site={data.site} />
+        <Footer site={data.site} />
+      </div>
     </main>
   );
 }
