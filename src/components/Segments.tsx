@@ -2,6 +2,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { useLanguage } from '@/context/LanguageContext';
+import { motion } from 'framer-motion';
 
 export const Team = ({ members, teamInfo }: { members: any[]; teamInfo?: any }) => {
     const { language } = useLanguage();
@@ -17,7 +18,14 @@ export const Team = ({ members, teamInfo }: { members: any[]; teamInfo?: any }) 
     const info = teamInfo || defaultInfo;
 
     return (
-        <section id="about" className="py-32 bg-[#030a08] relative border-t border-white/5">
+        <motion.section
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-10%" }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            id="about"
+            className="py-32 bg-[#030a08] relative border-t border-white/5"
+        >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div className="text-center mb-20">
                     <h2 className="text-[3rem] sm:text-[4rem] font-bold text-white tracking-tight mb-6 leading-[1.1]">{info.title}</h2>
@@ -28,7 +36,14 @@ export const Team = ({ members, teamInfo }: { members: any[]; teamInfo?: any }) 
 
                 <div className="flex flex-wrap justify-center gap-6 max-w-5xl mx-auto">
                     {members.map((member, idx) => (
-                        <div key={member.id} className="group bg-[#06120e] border border-white/5 rounded-3xl p-8 flex flex-col items-center gap-6 hover:border-primary-500/30 hover:bg-[#0a1b15] transition-all duration-300 transform hover:-translate-y-2 overflow-hidden relative w-full sm:w-64">
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.5, delay: idx * 0.1 }}
+                            key={member.id}
+                            className="group bg-[#06120e] border border-white/5 rounded-3xl p-8 flex flex-col items-center gap-6 hover:border-primary-500/30 hover:bg-[#0a1b15] transition-all duration-300 transform hover:-translate-y-2 overflow-hidden relative w-full sm:w-64"
+                        >
 
                             <div className="w-32 h-32 rounded-full bg-[#11241d] border-4 border-white/5 flex items-center justify-center font-bold text-3xl relative z-10 overflow-hidden shadow-2xl group-hover:border-primary-500/30 transition-colors">
                                 {member.photo ? (
@@ -44,11 +59,11 @@ export const Team = ({ members, teamInfo }: { members: any[]; teamInfo?: any }) 
                             </div>
 
                             <div className="absolute inset-0 bg-gradient-to-t from-primary-500/5 to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                        </div>
+                        </motion.div>
                     ))}
                 </div>
             </div>
-        </section>
+        </motion.section>
     );
 };
 
@@ -66,7 +81,14 @@ export const About = ({ about }: { about?: any }) => {
     const a = about || defaultAbout;
 
     return (
-        <section id="about" className="py-32 bg-[#030a08] relative">
+        <motion.section
+            initial={{ opacity: 0, scale: 0.95, filter: "blur(5px)" }}
+            whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+            viewport={{ once: true, margin: "-10%" }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+            id="about"
+            className="py-32 bg-[#030a08] relative"
+        >
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
                 {/* Darker CTA Box */}
@@ -98,6 +120,6 @@ export const About = ({ about }: { about?: any }) => {
                     </div>
                 </div>
             </div>
-        </section>
+        </motion.section>
     );
 };

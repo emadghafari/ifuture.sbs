@@ -1,6 +1,7 @@
 "use client";
 import React from 'react';
 import { useLanguage } from '@/context/LanguageContext';
+import { motion } from 'framer-motion';
 
 export const AdvancedEngineering = () => {
     const { language } = useLanguage();
@@ -18,7 +19,13 @@ export const AdvancedEngineering = () => {
     };
 
     return (
-        <section className="py-24 bg-[#050f0c] relative flex justify-center px-4 sm:px-6">
+        <motion.section
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-10%" }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="py-24 bg-[#050f0c] relative flex justify-center px-4 sm:px-6"
+        >
             <div className="max-w-[1200px] w-full rounded-[2.5rem] border border-white/5 bg-[#030806] p-12 md:p-24 text-center relative overflow-hidden flex flex-col items-center">
 
                 {/* Subtle Background Grid Pattern */}
@@ -56,6 +63,6 @@ export const AdvancedEngineering = () => {
                     -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
                 }
             `}</style>
-        </section>
+        </motion.section>
     );
 };
