@@ -58,11 +58,11 @@ const Navbar = ({ site }: { site?: any }) => {
 
                 {/* Centered Links */}
                 <div className="hidden md:flex items-center gap-1 md:gap-2">
-                    <Link href="/" className="px-4 py-2 rounded-full text-sm font-medium text-slate-300 hover:text-white hover:bg-white/5 transition-all">{t('nav_home')}</Link>
-                    <Link href="/products" className="px-4 py-2 rounded-full text-sm font-medium text-slate-300 hover:text-white hover:bg-white/5 transition-all">{t('nav_products')}</Link>
-                    <Link href="/projects" className="px-4 py-2 rounded-full text-sm font-medium text-gold-400 bg-gold-400/10 hover:bg-gold-400/20 transition-all">Campaigns</Link>
-                    <Link href="/#about" className="px-4 py-2 rounded-full text-sm font-medium text-slate-300 hover:text-white hover:bg-white/5 transition-all">{t('nav_about')}</Link>
-                    <Link href="/contact" className="px-4 py-2 rounded-full text-sm font-medium text-slate-300 hover:text-white hover:bg-white/5 transition-all">{t('nav_contact')}</Link>
+                    <Link href="/" className="px-4 py-2 rounded-full text-sm font-medium text-slate-300 hover:text-primary-400 hover:bg-primary-900/20 transition-all">{t('nav_home')}</Link>
+                    <Link href="/products" className="px-4 py-2 rounded-full text-sm font-medium text-slate-300 hover:text-primary-400 hover:bg-primary-900/20 transition-all">{t('nav_products')}</Link>
+                    <Link href="/projects" className="px-4 py-2 rounded-full text-sm font-medium text-primary-400 bg-primary-900/30 border border-primary-500/20 hover:bg-primary-900/50 shadow-[0_0_15px_rgba(4,120,87,0.15)] transition-all">Campaigns</Link>
+                    <Link href="/#about" className="px-4 py-2 rounded-full text-sm font-medium text-slate-300 hover:text-primary-400 hover:bg-primary-900/20 transition-all">{t('nav_about')}</Link>
+                    <Link href="/contact" className="px-4 py-2 rounded-full text-sm font-medium text-slate-300 hover:text-primary-400 hover:bg-primary-900/20 transition-all">{t('nav_contact')}</Link>
                 </div>
 
                 {/* Right Actions */}
