@@ -42,7 +42,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" dir="ltr" suppressHydrationWarning>
+    <html lang="en" dir="ltr" className="bg-[#030a08]" suppressHydrationWarning>
       <body className={`${inter.variable} ${outfit.variable} antialiased font-sans bg-[#030a08] text-white overflow-x-hidden`} suppressHydrationWarning>
         <LanguageProvider>
           {children}
