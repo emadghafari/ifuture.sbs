@@ -31,8 +31,8 @@ export const PromotionalVideo = () => {
             {/* Background Atmosphere */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(4,120,87,0.03)_0%,transparent_70%)] pointer-events-none"></div>
 
-            <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center">
 
                     {/* Textual Content - Soft & Elegant */}
                     <motion.div
@@ -40,14 +40,14 @@ export const PromotionalVideo = () => {
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true, margin: "-10%" }}
                         transition={{ duration: 0.8, ease: "easeOut" }}
-                        className="flex flex-col gap-6 md:pl-8 lg:pl-16 relative z-10"
+                        className="flex flex-col gap-6 md:pl-8 lg:pl-16 relative z-10 lg:col-span-5"
                     >
                         <div className="inline-flex max-w-max items-center gap-2 px-4 py-1.5 rounded-full border border-primary-500/20 bg-primary-900/10 text-primary-400 text-xs font-bold tracking-[0.2em] uppercase shadow-[0_0_15px_rgba(4,120,87,0.1)]">
                             <div className="w-1.5 h-1.5 rounded-full bg-primary-400 animate-pulse"></div>
                             {text.badge}
                         </div>
 
-                        <h2 className="text-[2.5rem] sm:text-[3.5rem] lg:text-[4rem] font-medium tracking-tight leading-[1.1] text-white">
+                        <h2 className="text-[2.5rem] sm:text-[3.5rem] lg:text-[4.5rem] font-medium tracking-tight leading-[1.1] text-white">
                             {text.titlePart1} <br />
                             <span className="text-transparent font-semibold bg-clip-text bg-gradient-to-r from-primary-200 to-primary-600 block mt-2">{text.titlePart2}</span>
                         </h2>
@@ -60,15 +60,16 @@ export const PromotionalVideo = () => {
                     {/* Video Player - Glassmorphic & Floating */}
                     <motion.div
                         style={{ y, opacity }}
-                        className="relative group w-full aspect-video rounded-3xl md:rounded-[2.5rem] overflow-hidden border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] bg-[#050f0c]"
+                        className="relative w-full aspect-video rounded-3xl md:rounded-[2.5rem] overflow-hidden border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] bg-[#050f0c] lg:col-span-7"
                     >
-                        <div className="absolute inset-0 bg-gradient-to-tr from-primary-900/20 to-transparent pointer-events-none z-10 transition-opacity duration-500 group-hover:opacity-0 mix-blend-overlay"></div>
+                        <div className="absolute inset-0 bg-gradient-to-tr from-primary-900/10 to-transparent pointer-events-none z-10 mix-blend-overlay"></div>
                         <video
                             src="/promo-video.mp4"
-                            className="w-full h-full object-cover scale-[1.02] transition-transform duration-700 group-hover:scale-100"
-                            controls
-                            controlsList="nodownload"
-                            poster="/promo-poster.jpg" // Optional poster
+                            className="w-full h-full object-cover scale-[1.05]"
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
                             preload="metadata"
                         >
                             Your browser does not support the video tag.
