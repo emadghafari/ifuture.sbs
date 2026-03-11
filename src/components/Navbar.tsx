@@ -33,10 +33,10 @@ const Navbar = ({ site }: { site?: any }) => {
     ] as const;
 
     return (
-        <div className="fixed top-6 left-0 right-0 z-50 px-4 sm:px-6 flex justify-center pointer-events-none">
+        <div className="fixed top-6 left-0 right-0 z-50 px-4 sm:px-6 flex justify-center pointer-events-none transition-all duration-300">
 
             {/* The Floating Pill Navbar - Extremely Glassy */}
-            <nav className="w-full max-w-6xl bg-[#091512]/40 backdrop-blur-3xl border border-white/10 rounded-full px-6 py-3 shadow-[0_8px_32px_rgba(0,0,0,0.4)] pointer-events-auto flex justify-between items-center transition-all duration-300">
+            <nav className="w-full max-w-6xl bg-[#091512]/20 backdrop-blur-md border border-white/10 rounded-full px-6 py-3 shadow-[0_8px_32px_rgba(0,0,0,0.4)] pointer-events-auto flex justify-between items-center transition-all duration-300">
 
                 {/* Logo */}
                 <Link href="/" className="flex items-center gap-3 group">
